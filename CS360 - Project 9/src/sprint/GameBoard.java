@@ -1,5 +1,6 @@
 package sprint;
 
+import java.util.Observable;
 import java.util.Random;
 
 /**
@@ -160,6 +161,7 @@ public class GameBoard {
 	public void newBoard(){
 		generateBoard();
 	}
+	
 
 	/** This method allows a specially constructed board to be input.
 	   * Method assumes the input array is of correct format (9x9, values 0-9).

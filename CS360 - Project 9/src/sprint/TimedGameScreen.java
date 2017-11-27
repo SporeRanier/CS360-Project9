@@ -134,6 +134,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createBoardGui();
 		createQueueGui();
+		gameDriver.newBoard();
 		
 		setVisible(true);
 		

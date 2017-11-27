@@ -131,6 +131,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createBoardGui();
 		createQueueGui();
+		gameDriver.newBoard();
 		
 		setVisible(true);
 		

@@ -23,7 +23,7 @@ public class Top10Scores extends JFrame implements Observer{
 		highScorePanel.setLayout(new GridLayout(10, 1, 0, 0));
 		
 		JLabel label0 = new JLabel();
-		label0.setText("Player 1");
+		label0.setText("Player 1 500");
 		label0.setHorizontalAlignment(SwingConstants.CENTER);
 		label0.setFont(new Font("Showcard Gothic", Font.PLAIN, 28));
 		highScorePanel.add(label0);

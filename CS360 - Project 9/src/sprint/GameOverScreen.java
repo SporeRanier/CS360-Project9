@@ -80,11 +80,12 @@ public class GameOverScreen extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == newGame){
 					P8NormalGameScreen newGame = new P8NormalGameScreen();
-					System.out.println("I am in the if");
+					newGame.gameDriver.newBoard();
 					setVisible(false);
 				}
 				if(e.getSource() == btnNewTimedGame){
 					TimedGameScreen time = new TimedGameScreen();
+					time.gameDriver.newBoard();
 					setVisible(false);
 				}
 				if(e.getSource() == highScores){

@@ -158,4 +158,10 @@ public class TimedGame extends Observable implements Observer{
 		setChanged();
 		notifyObservers();
 	}
+	public void newBoard()
+    {
+      gameBoard.newBoard();
+      setChanged();
+      notifyObservers();
+    }
 }

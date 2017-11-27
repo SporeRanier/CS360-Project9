@@ -95,4 +95,10 @@ public class UntimedGame extends Observable{
 	public int getBoardStatus(){
 		return gameBoard.boardStatus();
 	}
+	public void newBoard()
+    {
+      gameBoard.newBoard();
+      setChanged();
+      notifyObservers();
+    }
 }
