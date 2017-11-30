@@ -164,4 +164,13 @@ public class TimedGame extends Observable implements Observer{
       setChanged();
       notifyObservers();
     }
+	
+	 /** Method which removes all instances of the value passed into it from the board
+   * @param value The value that will be removed from the board
+   */
+  public void removeTiles(int value){
+    gameBoard.removeTiles(value);
+    setChanged();
+    notifyObservers();
+  }
 }

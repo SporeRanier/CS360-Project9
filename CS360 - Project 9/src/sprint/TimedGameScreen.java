@@ -342,8 +342,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 		msLabel.setText(time);
 		if (gameDriver.getRawTime() == 0)
 		{
-			//TODO:
-			System.out.println("Game Over");
+			//TODO:System.out.println("Game Over");
 		}
 	}
 	
@@ -478,7 +477,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 			
 		}
 		if(gameDriver.refreshLeft()){
-			resetButton.setEnabled(true);
+			resetButton.setEnabled(true); //Null Pointer was thrown here
 		}else{
 			resetButton.setEnabled(false);
 		}

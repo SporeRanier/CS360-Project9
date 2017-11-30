@@ -95,10 +95,18 @@ public class UntimedGame extends Observable{
 	public int getBoardStatus(){
 		return gameBoard.boardStatus();
 	}
-	public void newBoard()
-    {
+	public void newBoard(){
       gameBoard.newBoard();
       setChanged();
       notifyObservers();
-    }
+  }
+	/** Method which removes all instances of the value passed into it from the board
+   * @param value The value that will be removed from the board
+   */
+	public void removeTiles(int value){
+	  gameBoard.removeTiles(value);
+	  setChanged();
+    notifyObservers();
+	}
+	
 }

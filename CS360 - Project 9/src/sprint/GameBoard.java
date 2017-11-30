@@ -124,10 +124,12 @@ public class GameBoard {
 				}
 			}
 		}
+		
 		//check to see if the total is equal to the value of the placed tile
 		if ( (total % 10) == value){
 			clearAround(x, y);
-			tilesPlaced -= tileCount + 1;
+			tilesPlaced = tilesPlaced - tileCount - 1;
+			//calculates the score if there are three+ tiles removed (that aren't the 
 			if (tileCount >= 3){
 				return total * tileCount;
 			}
@@ -136,6 +138,7 @@ public class GameBoard {
 		//This line removes 0 placed on the board if they don't remove other 0s
 		} else if (value == 0){
 			gameBoard[x][y] = 11;
+			tilesPlaced --;
 		}
 		//Result of 0 means no tiles removed
 		return 0;
@@ -162,7 +165,19 @@ public class GameBoard {
 		generateBoard();
 	}
 	
-
+	/** Method which removes all instances of the value passed into it from the board
+   * @param value The value that will be removed from the board
+   */
+	public void removeTiles(int value){
+	  for (int x=0; x<=8; x++){
+	    for (int y=0; y<=8; y++)
+	    {
+	      if (gameBoard[x][y] == value)
+	        gameBoard[x][y] = 11;
+	    }
+	  }
+	}
+	
 	/** This method allows a specially constructed board to be input.
 	   * Method assumes the input array is of correct format (9x9, values 0-9).
 	   * @param values The 9x9 array of new values to be used as a board
