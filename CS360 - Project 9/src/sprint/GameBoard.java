@@ -1,6 +1,5 @@
 package sprint;
 
-import java.util.Observable;
 import java.util.Random;
 
 /**
@@ -19,7 +18,7 @@ public class GameBoard {
 	private int tilesPlaced;
 	
 	//constructor that creates a board of 9*9 containing random numbers from 0 to 9
-	private GameBoard(){	
+	private GameBoard(){
     	generateBoard();
 	}
 	//generates a new board (9x9 where the center 7x7 are values 0-9 and the outer is 11 (empty))
@@ -46,16 +45,15 @@ public class GameBoard {
 	public static GameBoard getBoard(){
 		return boardInstance;
 	}
+	
 	//shows the caller the number of tiles currently on the board
 	public int numTilesPlaced(){
 		return tilesPlaced;
 	}
 	
-	//returns a copy of the gameBoard to show the player
 	/** Returns a copy of the values on the gameBoard, so they may be displayed.
 	   * @return int[][] Returns the actual values of the board
 	   */
-
 	public int [][] viewBoard() {
 		int [][] copyBoard = new int[9][];
 		//create a copy of the gameBoard to show the player
@@ -64,7 +62,13 @@ public class GameBoard {
 		}
 		return copyBoard;
 	}
-	//method returning int[4] which holds the minimums and maximums for x,y (so that -1 and 9 are not called in a 8x8 array
+	
+	/**  Method which returns an array holding the min and max values for the x & y axis.
+	 * This is used to keep the caller from trying to access a space which is out of bonds.
+   * @param x  The X coordinate of the tile in question.
+   * @param y  The Y coordinate of the tile in question.
+   * @return int[] - Returns [0] min for x, [1] min for y, [2] max for x, [3] max for y.
+   */
 	private int[] getMinMax(int x, int y){
 		int[] minMax = new int[4];
 		//indicates the bounds of checked area (being 1 away from the center (x,y))
@@ -131,7 +135,7 @@ public class GameBoard {
 			tilesPlaced = tilesPlaced - tileCount - 1;
 			//calculates the score if there are three+ tiles removed (that aren't the 
 			if (tileCount >= 3){
-				return total * tileCount;
+				return total + (total * tileCount);
 			}
 			return total;
 		
@@ -144,7 +148,66 @@ public class GameBoard {
 		return 0;
 	}
 	
-	//clears the tiles around x,y (meaning they are replaced by the value 11)
+	public int getScore(int x, int y, int value){
+	  //if the space is already occupied (being not 11), return an error code (-1)
+    if (gameBoard[x][y] != 11){
+      return -1;
+    }
+    //place the newly input value (parameter) into the gameboard
+    gameBoard[x][y] = value;
+    tilesPlaced ++;
+    //values to track total value of surrounding tiles, and the number of those tiles
+    int total= 0;
+    int tileCount = 0;
+    //get an array of bounds
+    int[] minMax = getMinMax(x,y);
+    //iterate through from min to max of x & y to determine total
+    for (int j = minMax[0]; j <= minMax[2]; j++){
+      for (int k = minMax[1]; k <= minMax[3]; k++){
+        //ignore a space if it is empty (11), or is the newly placed tile (j==x, k==y)
+        if (gameBoard[j][k] != 11 && (!(j == x && k == y))){
+          total += gameBoard[j][k]; 
+          tileCount += 1;
+        }
+      }
+    }
+    if ( (total % 10) == value){
+      return tileCount;
+    }
+    return 0;
+	}
+	
+	
+	
+	/** Method which returns an array of the .
+   * @return int[] Returns the score resulting from the placement of the tile. Score is -1 if the tile is occupied.
+   */
+	public int[] getHint(int value){
+	  int[] potential = new int[10];
+	  int topTiles = 0;
+	  
+	  for (int x=0; x<=8; x++){
+	    for (int y=0; y<=8; y++){
+	      int current = getScore(x,y,value);
+	      if (current > topTiles){
+	        //replace
+	      }
+	      else if (current == topTiles){
+	        //add
+	      }
+	      
+	    }
+	  }
+	  
+	  
+	  return potential;
+	}
+	
+	
+	/**  Method which removes (changes value to 11) all the tiles around the specified tile
+   * @param x  The X coordinate of the placed tile.
+   * @param y  The Y coordinate of the placed tile.
+   */
 	private void clearAround(int x, int y){
 		//get the array of bounds
 		int[] minMax = getMinMax(x,y);
@@ -155,12 +218,15 @@ public class GameBoard {
 			}
 		}
 	}
-	
+	/** Method which allows the caller to see how many tiles have been placed on the board
+   * @return int - the number of nonempty tiles which are currently on the board
+   */
 	public int boardStatus(){
 		return tilesPlaced;
 	}
 
-	//Generates a new board
+	/**  Method which is used to create a fresh gameBoard for a new game
+   */
 	public void newBoard(){
 		generateBoard();
 	}
@@ -179,9 +245,9 @@ public class GameBoard {
 	}
 	
 	/** This method allows a specially constructed board to be input.
-	   * Method assumes the input array is of correct format (9x9, values 0-9).
-	   * @param values The 9x9 array of new values to be used as a board
-	   */
+	 * Method assumes the input array is of correct format (9x9, values 0-9).
+	 * @param values The 9x9 array of new values to be used as a board
+	 */
 	public void debugBoard(int[][] values){
 		tilesPlaced = 0;
 		for (int x = 0; x <=8; x++){
