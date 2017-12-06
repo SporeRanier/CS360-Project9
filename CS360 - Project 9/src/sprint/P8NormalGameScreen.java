@@ -417,7 +417,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 				}
 				
 			}
-			else if((gameDriver.getBoardStatus() == 84)){
+			else if((gameDriver.getBoardStatus() == 84) || gameDriver.getBoardStatus() == 0){
 				try {
 					GameOverScreen gameoverquit = new GameOverScreen();
 				} catch (IOException e1) {

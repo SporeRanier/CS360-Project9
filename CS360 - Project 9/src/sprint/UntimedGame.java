@@ -21,6 +21,7 @@ public class UntimedGame extends Observable{
 	private int moveScore = 0;
 	private boolean tileRemove = true;
 	private int hints = 3;
+	
 	//Constructor for a singleton UntimedGame
 	private UntimedGame(){
 		gameBoard = GameBoard.getBoard();

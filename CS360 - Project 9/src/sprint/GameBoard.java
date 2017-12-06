@@ -26,6 +26,7 @@ public class GameBoard {
    */
 	private void generateBoard(){
 		Random random = new Random();
+		tilesPlaced = 0;
 		//instantiates gameBoard of 9x9
 		gameBoard = new int[9][9];
 		//for rows 1 - 7 (leaving 0 and 8 empty)
@@ -38,10 +39,10 @@ public class GameBoard {
 				//place a random number from 0 to 9 in the spot
 				} else{
 					gameBoard[x][y] = random.nextInt(10);
+					tilesPlaced ++;
 				}
 			}
 		}
-		tilesPlaced = 7*7;
 	}
 	
 	/**  Is the only way to access the singleton GameBoard
@@ -50,14 +51,7 @@ public class GameBoard {
 	public static GameBoard getBoard(){
 		return boardInstance;
 	}
-	
-	/** Method which returns the number of (non-empty) tiles on the board
-   * @return int - the number of tiles on the board
-   */
-	public int numTilesPlaced(){
-		return tilesPlaced;
-	}
-	
+		
 	/** Returns a copy of the values on the gameBoard, so they may be displayed.
 	   * @return int[][] Returns the actual values of the board
 	   */
@@ -135,11 +129,11 @@ public class GameBoard {
 				}
 			}
 		}
-		
+
 		//check to see if the total is equal to the value of the placed tile
 		if ( (total % 10) == value){
 			clearAround(x, y);
-			tilesPlaced = tilesPlaced - tileCount - 1;
+			//tilesPlaced = tilesPlaced - tileCount - 1;
 			//calculates the score if there are three+ tiles removed (that aren't the 
 			if (tileCount >= 3){
 				return total + (total * tileCount);
@@ -155,14 +149,17 @@ public class GameBoard {
 		return 0;
 	}
 	
+	/**  Method takes care of the placing of a tile, returning the score if successful, -1 if not.
+   * @param x  The X coordinate of the placed tile.
+   * @param y  The Y coordinate of the placed tile.
+   * @param value This is the value of the tile placed.
+   * @return int - Returns the number of tiles the placement of value in this position would remove.
+   */
 	public int getTilesRemoved(int x, int y, int value){
 	  //if the space is already occupied (being not 11), return an error code (-1)
     if (gameBoard[x][y] != 11){
       return -1;
     }
-    //place the newly input value (parameter) into the gameboard
-    //gameBoard[x][y] = value;
-    tilesPlaced ++;
     //values to track total value of surrounding tiles, and the number of those tiles
     int total= 0;
     int tileCount = 0;
@@ -171,7 +168,7 @@ public class GameBoard {
     //iterate through from min to max of x & y to determine total
     for (int j = minMax[0]; j <= minMax[2]; j++){
       for (int k = minMax[1]; k <= minMax[3]; k++){
-        //ignore a space if it is empty (11), or is the newly placed tile (j==x, k==y)
+        //ignore a space if it is empty (11), or is the tile itself (x,y in parameters)
         if (gameBoard[j][k] != 11 && (!(j == x && k == y))){
           total += gameBoard[j][k]; 
           tileCount += 1;
@@ -184,16 +181,15 @@ public class GameBoard {
     return 0;
 	}
 	
-	
-	
 	/** Method which returns an array of the .
    * @return int[] Returns the score resulting from the placement of the tile. Score is -1 if the tile is occupied.
    */
 	public int[][] getHint(int value){
+	  //TODO: Change type?
 	  int[][] potential = new int[40][2];
 	  int pointer = 0;
 	  int topTiles = 1;
-	  
+	  //iterate through entire board
 	  for (int x=0; x<=8; x++){
 	    for (int y=0; y<=8; y++){
 	      int current = getTilesRemoved(x,y,value);
@@ -204,21 +200,16 @@ public class GameBoard {
 	        potential[pointer][0] = x;
 	        potential[pointer][1] = y;
 	        pointer++;
-	        System.out.println("---------------------");
-	        System.out.printf("%d,%d\n", x, y);
 	      }
 	      else if (current == topTiles){ 
 	        potential[pointer][0] = x;
 	        potential[pointer][1] = y;
 	        pointer++;
-          System.out.printf("%d,%d\n", x, y);
 	      }
 	    }
 	  }
-	  
 	  return potential;
 	}
-	
 	
 	/**  Method which removes (changes value to 11) all the tiles around the specified tile
    * @param x  The X coordinate of the placed tile.
@@ -230,10 +221,14 @@ public class GameBoard {
 		//iterate through from min to max of x & y (bounds) to replace with empty spaces (11)
 		for (int j = minMax[0]; j <= minMax[2]; j++){
 			for (int k = minMax[1]; k <= minMax[3]; k++){
-				gameBoard[j][k] = (int) 11;
+			  if (gameBoard[j][k] != 11){
+			    gameBoard[j][k] = (int) 11;
+			    tilesPlaced --;
+			  }
 			}
 		}
 	}
+	
 	/** Method which allows the caller to see how many tiles have been placed on the board
    * @return int - the number of nonempty tiles which are currently on the board
    */
@@ -256,6 +251,7 @@ public class GameBoard {
 	    {
 	      if (gameBoard[x][y] == value)
 	        gameBoard[x][y] = 11;
+	        tilesPlaced--;
 	    }
 	  }
 	}
