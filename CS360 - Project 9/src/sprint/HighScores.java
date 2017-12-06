@@ -1,4 +1,5 @@
 package sprint;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,10 +7,12 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
+
 public class HighScores {
-  private String[] names;//Contains the names of the people that have high scores.
-  private int[] scores; //Contains the scores of the top 10 high scores.
-  private String[] times; //Contains the time when the high scores were achieved.
+  private String[] names;// Contains the names of the people that have high scores.
+  private int[] scores; // Contains the scores of the top 10 high scores.
+  private String[] times; // Contains the time when the high scores were achieved.
+
   /**
    * Constructor for the HighScores class which initializes each data field.
    */
@@ -18,6 +21,7 @@ public class HighScores {
     scores = new int[10];
     times = new String[10];
   }
+
   /**
    * Getter method for receiving the array of names that correspond with the top scores.
    * 
@@ -26,6 +30,7 @@ public class HighScores {
   public String[] getNames() {
     return names;
   }
+
   /**
    * Getter for individual elements within the names array.
    * 
@@ -36,6 +41,7 @@ public class HighScores {
   public String getName(int index) {
     return names[index];
   }
+
   /**
    * Getter method for receiving the Scores array from an instance of this class.
    * 
@@ -44,6 +50,7 @@ public class HighScores {
   public int[] getScores() {
     return scores;
   }
+
   /**
    * Getter for individual elements within the scores array.
    * 
@@ -54,6 +61,7 @@ public class HighScores {
   public int getScore(int index) {
     return scores[index];
   }
+
   /**
    * Getter for the times array
    * 
@@ -62,6 +70,7 @@ public class HighScores {
   public String[] getTimes() {
     return times;
   }
+
   /**
    * Getter for individual elements within the times array.
    * 
@@ -72,6 +81,7 @@ public class HighScores {
   public String getTime(int index) {
     return times[index];
   }
+
   /**
    * The add method tests to see if a new numerical value passed into the method will be able to
    * place in the top 10 scores. If it does make the list it is inserted in t's proper position and
@@ -107,6 +117,7 @@ public class HighScores {
       counter++;
     }
   }
+
   public void insertScore(int position, String name, int score, String time) {
     int temp = 0;
     String tempName = "";
@@ -123,6 +134,7 @@ public class HighScores {
     names[position] = name;
     times[position] = time;
   }
+
   public int newHighScore(int score) {
     for (int i = 0; i < scores.length; i++) {
       if (score > scores[i]) {
@@ -131,6 +143,7 @@ public class HighScores {
     }
     return -1;
   }
+
   /**
    * The method that prompts the user to enter their name if their score is in the top 10.
    * 
@@ -140,6 +153,7 @@ public class HighScores {
     String name = JOptionPane.showInputDialog("Please enter your name.");
     return name;
   }
+
   /**
    * This method reads the text file "HighScores.txt" and fills the names and scores arrays with the
    * appropriate date to show the top scores and the names of the people that got these scores.
@@ -166,6 +180,7 @@ public class HighScores {
     }
     inputFile.close();
   }
+
   /**
    * This method works as an update method for writing an the top scores in case a new score is
    * added which will ultimately push another value out of the array.

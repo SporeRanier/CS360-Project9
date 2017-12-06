@@ -1,4 +1,5 @@
 package sprint;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,10 +9,11 @@ import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 public class HighScoresTimed {
-  private String[] names; //Contains the names of the people who have high timed scores.
+  private String[] names; // Contains the names of the people who have high timed scores.
   private int[] scores;
-  private int[] times; //Contains the top 10 times for completing the game.
-  private String[] dates; //Contains the dates when these high timed scores were achieved.
+  private int[] times; // Contains the top 10 times for completing the game.
+  private String[] dates; // Contains the dates when these high timed scores were achieved.
+
   /**
    * Constructor for HighScoresTimed which initializes all the data fields.
    */
@@ -21,6 +23,7 @@ public class HighScoresTimed {
     times = new int[10];
     dates = new String[10];
   }
+
   /**
    * The getter method for the names field.
    * 
@@ -30,6 +33,7 @@ public class HighScoresTimed {
   public String[] getNames() {
     return names;
   }
+
   /**
    * Another getter method for the individual elements of the names array.
    * 
@@ -40,6 +44,7 @@ public class HighScoresTimed {
   public String getName(int index) {
     return names[index];
   }
+
   /**
    * Getter method for the scores data field.
    * 
@@ -48,6 +53,7 @@ public class HighScoresTimed {
   public int[] getScores() {
     return scores;
   }
+
   /**
    * Another getter method for the scores field which returns individual scores from the scores
    * array.
@@ -59,6 +65,7 @@ public class HighScoresTimed {
   public int getScore(int index) {
     return scores[index];
   }
+
   /**
    * A getter method for the times data field.
    * 
@@ -67,6 +74,7 @@ public class HighScoresTimed {
   public int[] getTimes() {
     return times;
   }
+
   /**
    * Another getter method that returns individual time values from within the times array.
    * 
@@ -77,6 +85,7 @@ public class HighScoresTimed {
   public int getTime(int index) {
     return times[index];
   }
+
   /**
    * A getter method for the dates data field.
    * 
@@ -85,6 +94,7 @@ public class HighScoresTimed {
   public String[] getDates() {
     return dates;
   }
+
   /**
    * Another getter method for the dates field which returns individual elements of the dates array.
    * 
@@ -95,6 +105,7 @@ public class HighScoresTimed {
   public String getDate(int index) {
     return dates[index];
   }
+
   /**
    * This method checks to see if the score of the most recently completed timed games is a high
    * score and if so returns the index of the position where it will be inserted into the scores
@@ -107,6 +118,7 @@ public class HighScoresTimed {
   public int newHighScore() {
     return -1;
   }
+
   /**
    * This method inserts a new high score into the scores array as well as the corresponding name,
    * time, and date values into their respective parallel arrays. Lower scores are then pushed down
@@ -143,6 +155,7 @@ public class HighScoresTimed {
     times[position] = time;
     dates[position] = date;
   }
+
   /**
    * This method prompts the user to enter a name into an input box and returns the string that they
    * entered.
@@ -153,6 +166,7 @@ public class HighScoresTimed {
     String input = JOptionPane.showInputDialog("Please enter your name");
     return input;
   }
+
   /**
    * Fills the data fields with their corresponding values by reading the high score information
    * from a text file.
@@ -180,6 +194,7 @@ public class HighScoresTimed {
     }
     inputFile.close();
   }
+
   /**
    * This method writes new high score related values, including name, score, time, and date, to a
    * text file.
