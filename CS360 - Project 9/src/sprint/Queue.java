@@ -16,7 +16,6 @@ public class Queue {
 	
 	private Random random = new Random();
 	private int[] queue;
-
 	private boolean refreshLeft = true;
 	//constructor for queue, with a length of 5 numbers randomly taken from 0 - 9
 	private Queue(){
@@ -82,8 +81,9 @@ public class Queue {
 	}
 	
 	//Generates a fresh queue
-	public void newBoard(){
+	public void newQueue(){
 		generateQueue();
+		refreshLeft = true;
 	}
 
 	/** This method allows a predetermined queue to be made.

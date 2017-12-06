@@ -14,14 +14,16 @@ public class GameBoard {
 	private static GameBoard boardInstance = new GameBoard();
 	//stores the actual board
 	private int[][] gameBoard;
-
 	private int tilesPlaced;
 	
-	//constructor that creates a board of 9*9 containing random numbers from 0 to 9
+	/** Constructor for gameboard, which invokes generateBoard(), creating a fresh board
+   */
 	private GameBoard(){
     	generateBoard();
 	}
-	//generates a new board (9x9 where the center 7x7 are values 0-9 and the outer is 11 (empty))
+
+	/**  method used to generate a fresh board (9x9, inner 7x7 populated with 0-9)
+   */
 	private void generateBoard(){
 		Random random = new Random();
 		//instantiates gameBoard of 9x9
@@ -41,12 +43,17 @@ public class GameBoard {
 		}
 		tilesPlaced = 7*7;
 	}
-	//as GameBoard is a singleton (I hope anyway), this method is how it is accessed
+	
+	/**  Is the only way to access the singleton GameBoard
+   * @return GameBoard - the instance of the gameboard
+   */
 	public static GameBoard getBoard(){
 		return boardInstance;
 	}
 	
-	//shows the caller the number of tiles currently on the board
+	/** Method which returns the number of (non-empty) tiles on the board
+   * @return int - the number of tiles on the board
+   */
 	public int numTilesPlaced(){
 		return tilesPlaced;
 	}
@@ -65,8 +72,8 @@ public class GameBoard {
 	
 	/**  Method which returns an array holding the min and max values for the x & y axis.
 	 * This is used to keep the caller from trying to access a space which is out of bonds.
-   * @param x  The X coordinate of the tile in question.
-   * @param y  The Y coordinate of the tile in question.
+   * @param x - The X coordinate of the tile in question.
+   * @param y - The Y coordinate of the tile in question.
    * @return int[] - Returns [0] min for x, [1] min for y, [2] max for x, [3] max for y.
    */
 	private int[] getMinMax(int x, int y){
@@ -148,13 +155,13 @@ public class GameBoard {
 		return 0;
 	}
 	
-	public int getScore(int x, int y, int value){
+	public int getTilesRemoved(int x, int y, int value){
 	  //if the space is already occupied (being not 11), return an error code (-1)
     if (gameBoard[x][y] != 11){
       return -1;
     }
     //place the newly input value (parameter) into the gameboard
-    gameBoard[x][y] = value;
+    //gameBoard[x][y] = value;
     tilesPlaced ++;
     //values to track total value of surrounding tiles, and the number of those tiles
     int total= 0;
@@ -182,23 +189,32 @@ public class GameBoard {
 	/** Method which returns an array of the .
    * @return int[] Returns the score resulting from the placement of the tile. Score is -1 if the tile is occupied.
    */
-	public int[] getHint(int value){
-	  int[] potential = new int[10];
-	  int topTiles = 0;
+	public int[][] getHint(int value){
+	  int[][] potential = new int[40][2];
+	  int pointer = 0;
+	  int topTiles = 1;
 	  
 	  for (int x=0; x<=8; x++){
 	    for (int y=0; y<=8; y++){
-	      int current = getScore(x,y,value);
+	      int current = getTilesRemoved(x,y,value);
 	      if (current > topTiles){
-	        //replace
+	        potential = new int[10][2];
+	        pointer = 0;
+	        topTiles = current;
+	        potential[pointer][0] = x;
+	        potential[pointer][1] = y;
+	        pointer++;
+	        System.out.println("---------------------");
+	        System.out.printf("%d,%d\n", x, y);
 	      }
-	      else if (current == topTiles){
-	        //add
+	      else if (current == topTiles){ 
+	        potential[pointer][0] = x;
+	        potential[pointer][1] = y;
+	        pointer++;
+          System.out.printf("%d,%d\n", x, y);
 	      }
-	      
 	    }
 	  }
-	  
 	  
 	  return potential;
 	}

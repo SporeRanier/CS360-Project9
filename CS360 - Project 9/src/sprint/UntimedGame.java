@@ -19,6 +19,8 @@ public class UntimedGame extends Observable{
 	private int moves;
 	private int totalScore = 0;
 	private int moveScore = 0;
+	private boolean tileRemove = true;
+	private int hints = 3;
 	//Constructor for a singleton UntimedGame
 	private UntimedGame(){
 		gameBoard = GameBoard.getBoard();
@@ -27,8 +29,8 @@ public class UntimedGame extends Observable{
 	}
 	//access to the UntimedGame
 	/**  Returns the instance of this class, as well as starting the thread for the clock.
-	   * @return UntimedGame The instance of this game that is returned.
-	   */
+	 * @return UntimedGame The instance of this game that is returned.
+	 */
 	public static UntimedGame getUntimedGame(){
 		return untimedInstance;
 	}
@@ -53,9 +55,12 @@ public class UntimedGame extends Observable{
 		moves--;
 		totalScore += moveScore;
 		//notify observers
-		System.out.printf("Score: %d  MoveScore: %d\n", totalScore, moveScore);
 		setChanged();
 		notifyObservers();
+		
+		//TODO: Lets me test the thing
+    gameBoard.getHint(queue.viewTop());
+    
 		return moveScore;
 	}
 	//returns a copy of the queue
@@ -66,9 +71,10 @@ public class UntimedGame extends Observable{
 	public int viewTop(){
 		return queue.viewTop();
 	}
+	
 	/**  Used to refresh the queue. Only really calls the same method in Queue.
-	   * @return boolean Returns true if successful, return false if not.
-	   */
+	 * @return boolean Returns true if successful, return false if not.
+	 */
 	public boolean refreshQueue(){
 		boolean refreshed = queue.refreshQueue();
 		setChanged();
@@ -95,18 +101,45 @@ public class UntimedGame extends Observable{
 	public int getBoardStatus(){
 		return gameBoard.boardStatus();
 	}
-	public void newBoard(){
+	/** Method which generates a new game, resetting all necessary values 
+   */
+	public void newGame(){
       gameBoard.newBoard();
+      queue.newQueue();
+      moves = 50;
+      tileRemove = true;
+      hints = 3;
       setChanged();
       notifyObservers();
   }
-	/** Method which removes all instances of the value passed into it from the board
-   * @param value The value that will be removed from the board
+	/** Method which removes all instances of the value passed into it from the board.
+   * @param value The value that will be removed from the board.
+   * @return boolean - returns true if there was a remove left, and tiles were removed, and false elsewise.
    */
-	public void removeTiles(int value){
-	  gameBoard.removeTiles(value);
-	  setChanged();
-    notifyObservers();
+	public boolean removeTiles(int value){
+	  if (tileRemove == true){
+	    gameBoard.removeTiles(value);
+	    setChanged();
+	    notifyObservers();
+	    tileRemove = false;
+	    return true;
+	  }
+	  return false;
 	}
 	
+  /**  Tells the caller what the 'best' moves are, defined as removing most tiles.
+   * @return int[][] An array where holding a group of 2 ints (an x & y) that are the 'best' moves.
+   *                  Returns an array holding 9, 9 if no hints were left.
+   */
+  public int[][] getHint()
+  {
+    if (hints > 0){
+      hints --;
+      return gameBoard.getHint(viewTop());
+    }
+    else{
+      int[][] noHint = {{9}, {9}};
+      return noHint;
+    }
+  }
 }

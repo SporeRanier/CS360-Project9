@@ -131,19 +131,11 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		createBoardGui();
 		createQueueGui();
-		gameDriver.newBoard();
+		gameDriver.newGame();
 		
 		setVisible(true);
-		
-		
 	}
 	public void buildPanel(){
-		
-		
-		
-		
-		
-		
 		music1 = new File("katyusha.wav");
 		music2 = new File("rasputin.wav");
 		music3 = new File("sacred.wav");
@@ -161,8 +153,6 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 			e.printStackTrace();
 		}
 				
-		
-		
 		try {			
 			url2 = uri2.toURL();
 			sound2 = Applet.newAudioClip(url2);
@@ -177,7 +167,6 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	private void createQueueGui(){

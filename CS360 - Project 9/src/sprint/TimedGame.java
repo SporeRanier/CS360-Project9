@@ -13,7 +13,6 @@ package sprint;
 import java.util.Observable;
 import java.util.Observer;
 
-
 public class TimedGame extends Observable implements Observer{
 	private static TimedGame timedInstance = new TimedGame();
 	
@@ -24,6 +23,9 @@ public class TimedGame extends Observable implements Observer{
 	private int seconds;
 	private int totalScore = 0;
 	private int moveScore = 0;
+	private boolean tileRemove = true;
+	private int hints = 3;
+	
 	private static Clock clock;
 	static Thread thread1;
 	
@@ -35,7 +37,7 @@ public class TimedGame extends Observable implements Observer{
 		clock.addObserver(this);
 		thread1 = new Thread(clock);
 	}
-	//accessor for a TimedGame
+
 	/**  Returns the instance of this class, as well as starting the thread for the clock.
 	   * @return TimedGame The instance of this game that is returned.
 	   */
@@ -48,11 +50,7 @@ public class TimedGame extends Observable implements Observer{
 	public int[][] viewBoard(){
 		return gameBoard.viewBoard();
 	}
-	/* Places a tile, using the top of the queue
-	 * Return value of -1 means the tile is occupied, 
-	 * value 0 means the tile was simply place,
-	 * value >= 1 means a tile was placed, and the returned value is the score
-	 */
+
 	/**  Method taking care of the placement of a tile.
 	 *   Takes care of all logic with board and queue.
 	 * @param x  The y coordinate of the placed tile
@@ -71,6 +69,10 @@ public class TimedGame extends Observable implements Observer{
 		//notify observers
 		setChanged();
 		notifyObservers();
+
+		//TODO: lets me test the thing
+		gameBoard.getHint(queue.viewTop());
+		
 		return moveScore;
 	}
 	//returns a copy of the queue
@@ -81,9 +83,8 @@ public class TimedGame extends Observable implements Observer{
 	public int viewTop(){
 		return queue.viewTop();
 	}
-	//refreshes the queue, true means the refresh happened
 	/**  Used to refresh the queue. Only really calls the same method in Queue.
-	   * @return boolean Returns true if successful, return false if not.
+	   * @return boolean - Returns true if successful, return false if not.
 	   */
 	public boolean refreshQueue(){
 		boolean refreshed = queue.refreshQueue();
@@ -107,12 +108,18 @@ public class TimedGame extends Observable implements Observer{
 	public int getBoardStatus(){
 		return gameBoard.boardStatus();
 	}
+	
 	public int getMinutes(){
 		return minutes;
 	}
+	
 	public int getSeconds(){
 		return seconds;
 	}
+	
+	 /**  Accessor for the raw time
+   * @return int - the raw time remaining (seconds left)
+   */
 	public int getRawTime(){
 		return rawSeconds;
 	}
@@ -131,7 +138,7 @@ public class TimedGame extends Observable implements Observer{
 	public int getTiles(){
 		return gameBoard.boardStatus();
 	}
-	//works as a game to test the functionality of the timed game
+	
 	/** Method used in debug mode, that generates a 'winable' gameboard and queue.
 	 *  The queue and gameBoard are predetermined, and the time is set to a shorter time.
 	 */
@@ -158,19 +165,48 @@ public class TimedGame extends Observable implements Observer{
 		setChanged();
 		notifyObservers();
 	}
-	public void newBoard()
-    {
-      gameBoard.newBoard();
-      setChanged();
-      notifyObservers();
-    }
 	
-	 /** Method which removes all instances of the value passed into it from the board
-   * @param value The value that will be removed from the board
+	 /**  Method which generates a fresh board
    */
-  public void removeTiles(int value){
-    gameBoard.removeTiles(value);
-    setChanged();
-    notifyObservers();
+	 public void newGame(){
+     gameBoard.newBoard();
+     queue.newQueue();
+     tileRemove = true;
+     hints = 3;
+     clock = new Clock(180);
+     clock.addObserver(this);
+     thread1 = new Thread(clock);
+     setChanged();
+     notifyObservers();
   }
+	
+	  /** Method which removes all instances of the value passed into it from the board.
+	   * @param value The value that will be removed from the board.
+	   * @return boolean - returns true if there was a remove left, and tiles were removed, and false elsewise.
+	   */
+	  public boolean removeTiles(int value){
+	    if (tileRemove == true){
+	      gameBoard.removeTiles(value);
+	      setChanged();
+	      notifyObservers();
+	      tileRemove = false;
+	      return true;
+	    }
+	    return false;
+	  }
+	  
+	  /**  Tells the caller what the 'best' moves are, defined as removing most tiles.
+	   * @return int[][] An array where holding a group of 2 ints (an x & y) that are the 'best' moves.
+	   */
+	  public int[][] getHint()
+	  {
+	    if (hints > 0){
+	      hints --;
+	      return gameBoard.getHint(viewTop());
+	    }
+	    else{
+	      int[][] noHint = {{9}, {9}};
+	      return noHint;
+	    }
+	  }
 }
