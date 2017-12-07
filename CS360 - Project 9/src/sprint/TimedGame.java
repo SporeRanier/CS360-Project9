@@ -1,5 +1,7 @@
 package sprint;
 
+import java.util.ArrayList;
+
 /**
 * Class acts as the game logic for an timed game in Sum Fun.
 * Contains a board, a queue, variables for time, and for Score.
@@ -198,14 +200,14 @@ public class TimedGame extends Observable implements Observer{
 	  /**  Tells the caller what the 'best' moves are, defined as removing most tiles.
 	   * @return int[][] An array where holding a group of 2 ints (an x & y) that are the 'best' moves.
 	   */
-	  public int[][] getHint()
+	  public ArrayList<int[]> getHint()
 	  {
 	    if (hints > 0){
 	      hints --;
 	      return gameBoard.getHint(viewTop());
 	    }
 	    else{
-	      int[][] noHint = {{9}, {9}};
+	      ArrayList<int[]> noHint = new ArrayList<>();
 	      return noHint;
 	    }
 	  }
