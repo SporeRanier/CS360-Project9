@@ -211,4 +211,8 @@ public class TimedGame extends Observable implements Observer{
 	      return noHint;
 	    }
 	  }
+	  
+	  public int hintsRemaining(){
+	    return hints;
+	  }
 }
