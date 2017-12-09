@@ -82,9 +82,6 @@ public class TimedGame extends Observable implements Observer {
     setChanged();
     notifyObservers();
 
-    // TODO: lets me test the thing
-    gameBoard.getHint(queue.viewTop());
-
     return moveScore;
   }
 
@@ -262,7 +259,5 @@ public class TimedGame extends Observable implements Observer {
     scores[1] = highScores.getScores();
     scores[2] = highScores.getTimes();
     return scores;
-  }
-  
-  
+  } 
 }

@@ -17,6 +17,7 @@ public class UntimedGame extends Observable{
 	
 	private GameBoard gameBoard;
 	private Queue queue;
+	private HighScores highScores;
 	private int moves;
 	private int totalScore = 0;
 	private int moveScore = 0;
@@ -27,6 +28,7 @@ public class UntimedGame extends Observable{
 	private UntimedGame(){
 		gameBoard = GameBoard.getBoard();
 		queue = Queue.getQueue();
+		highScores = new HighScores();
 		moves = 50;
 	}
 	//access to the UntimedGame
@@ -59,9 +61,6 @@ public class UntimedGame extends Observable{
 		//notify observers
 		setChanged();
 		notifyObservers();
-		
-		//TODO: Lets me test the thing
-    gameBoard.getHint(queue.viewTop());
     
 		return moveScore;
 	}
@@ -133,13 +132,11 @@ public class UntimedGame extends Observable{
    * @return int[][] An array where holding a group of 2 ints (an x & y) that are the 'best' moves.
    *                  Returns an array holding 9, 9 if no hints were left.
    */
-  public ArrayList<int[]> getHint()
-  {
+  public ArrayList<int[]> getHint(){
     if (hints > 0){
       hints --;
       return gameBoard.getHint(viewTop());
-    }
-    else{
+    }else{
       ArrayList<int[]> noHint = new ArrayList<>();
       return noHint;
     }
@@ -147,5 +144,24 @@ public class UntimedGame extends Observable{
   
   public int hintsRemaining(){
     return hints;
+  }
+  
+  public boolean isHighScore(int score){
+    int position = highScores.newHighScore(score);
+    if (position == -1){
+      return false;
+    }
+    return true;
+  }
+  public void insertScore(String name){
+    highScores.insertScore(name);
+  }
+  
+  public String[][] getScores(){
+    String[][] scores = new String[3][];
+    scores[0] = highScores.getNames();
+    scores[1] = highScores.getScores();
+    scores[2] = highScores.getTimes();
+    return scores;
   }
 }
