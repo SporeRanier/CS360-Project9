@@ -15,7 +15,7 @@ public class HighScoresTimed {
   private String[] dates; // Contains the dates when these high timed scores were achieved.
 
   /**
-   * Constructor for HighScoresTimed which initializes all the data fields.
+   * TODO Constructor for HighScoresTimed which initializes all the data fields.
    */
   public HighScoresTimed() {
     names = new String[10];
@@ -25,7 +25,7 @@ public class HighScoresTimed {
   }
 
   /**
-   * The getter method for the names field.
+   * TODO The getter method for the names field.
    * 
    * @return An array of strings containing the names of the people who are in the top ten for high
    *         scores.
@@ -107,22 +107,27 @@ public class HighScoresTimed {
   }
 
   /**
-   * This method checks to see if the score of the most recently completed timed games is a high
-   * score and if so returns the index of the position where it will be inserted into the scores
-   * array. If more than one score is the same, then times are compared and whoever completed the
-   * game faster will be the highest on the High Scores board.
+   * TODO This method checks to see if the score of the most recently completed timed games is a
+   * high score and if so returns the index of the position where it will be inserted into the
+   * scores array. If more than one score is the same, then times are compared and whoever completed
+   * the game faster will be the highest on the High Scores board.
    * 
    * @return The index where the new score will be inserted if it is a high score or a -1 to
    *         indicate that it is not a new high score.
    */
-  public int newHighScore() {
+  public int newHighScore(int score) {
+    for (int i = 0; i < scores.length; i++) {
+      if (score > scores[i]) {
+        return i;
+      }
+    }
     return -1;
   }
 
   /**
-   * This method inserts a new high score into the scores array as well as the corresponding name,
-   * time, and date values into their respective parallel arrays. Lower scores are then pushed down
-   * one position which will result in the values in the 10th being removed completely.
+   * TODO This method inserts a new high score into the scores array as well as the corresponding
+   * name, time, and date values into their respective parallel arrays. Lower scores are then pushed
+   * down one position which will result in the values in the 10th being removed completely.
    * 
    * @param position
    *          The position where the values will be inserted.
@@ -157,8 +162,8 @@ public class HighScoresTimed {
   }
 
   /**
-   * This method prompts the user to enter a name into an input box and returns the string that they
-   * entered.
+   * TODO This method prompts the user to enter a name into an input box and returns the string that
+   * they entered.
    * 
    * @return The string that was inputed into the input box.
    */
@@ -168,8 +173,8 @@ public class HighScoresTimed {
   }
 
   /**
-   * Fills the data fields with their corresponding values by reading the high score information
-   * from a text file.
+   * TODO Fills the data fields with their corresponding values by reading the high score
+   * information from a text file.
    * 
    * @throws IOException
    *           If the program has trouble connecting with the file.
@@ -185,7 +190,7 @@ public class HighScoresTimed {
       StringTokenizer tokenizer = new StringTokenizer(data, " ");
       names[i] = tokenizer.nextToken();
       scores[i] = Integer.parseInt(tokenizer.nextToken());
-      times[i] = (int) tokenizer.nextToken();
+      times[i] = Integer.parseInt(tokenizer.nextToken());
       dates[i] = tokenizer.nextToken();
       i++;
     }
@@ -196,8 +201,8 @@ public class HighScoresTimed {
   }
 
   /**
-   * This method writes new high score related values, including name, score, time, and date, to a
-   * text file.
+   * TODO This method writes new high score related values, including name, score, time, and date,
+   * to a text file.
    * 
    * @throws IOException
    *           In case the program has trouble connecting to the text file.

@@ -14,7 +14,7 @@ public class HighScores {
   private String[] times; // Contains the time when the high scores were achieved.
 
   /**
-   * Constructor for the HighScores class which initializes each data field.
+   * TODO Constructor for the HighScores class which initializes each data field.
    */
   public HighScores() {
     names = new String[10];
@@ -23,7 +23,7 @@ public class HighScores {
   }
 
   /**
-   * Getter method for receiving the array of names that correspond with the top scores.
+   * TODO Getter method for receiving the array of names that correspond with the top scores.
    * 
    * @return The names[] field.
    */
@@ -83,9 +83,9 @@ public class HighScores {
   }
 
   /**
-   * The add method tests to see if a new numerical value passed into the method will be able to
-   * place in the top 10 scores. If it does make the list it is inserted in t's proper position and
-   * shifts all lesser values down on the high scores list.
+   * TODO The add method tests to see if a new numerical value passed into the method will be able
+   * to place in the top 10 scores. If it does make the list it is inserted in t's proper position
+   * and shifts all lesser values down on the high scores list.
    * 
    * @param name
    *          A String value that corresponds to the numerical value passed into the method it shall
@@ -118,6 +118,21 @@ public class HighScores {
     }
   }
 
+  /**
+   * TODO This method inserts new high scores along with the name and time that go with the new high
+   * scores in each corresponding array. The scores that are less than the new high score are moved
+   * down in the list by one space and the tenth best score is removed entirely if the new score is
+   * not the tenth best score.
+   * 
+   * @param position
+   *          The position in the top ten where the new high score, name, and time will be inserted.
+   * @param name
+   *          The corresponding name that goes with the new high score.
+   * @param score
+   *          The new high score that will be inserted into the top 10 high scores.
+   * @param time
+   *          The corresponding time that goes with the new high score.
+   */
   public void insertScore(int position, String name, int score, String time) {
     int temp = 0;
     String tempName = "";
@@ -135,6 +150,17 @@ public class HighScores {
     times[position] = time;
   }
 
+  /**
+   * TODO This method checks to see if a new score qualifies to be in the top 10 high scores and if
+   * it does qualify then the index where it will be inserted will be returned otherwise a -1 will
+   * be returned indicating that it is not a new high score.
+   * 
+   * @param score
+   *          The score that the method will compare to the top 10 high scores to see if it
+   *          qualifies to be in the top 10 high scores.
+   * @return Either the index where the new high score will be inserted or a -1 indicating that it
+   *         is not a new high score.
+   */
   public int newHighScore(int score) {
     for (int i = 0; i < scores.length; i++) {
       if (score > scores[i]) {
@@ -145,7 +171,7 @@ public class HighScores {
   }
 
   /**
-   * The method that prompts the user to enter their name if their score is in the top 10.
+   * TODO The method that prompts the user to enter their name if their score is in the top 10.
    * 
    * @return The name that was entered into the input box.
    */
@@ -155,8 +181,9 @@ public class HighScores {
   }
 
   /**
-   * This method reads the text file "HighScores.txt" and fills the names and scores arrays with the
-   * appropriate date to show the top scores and the names of the people that got these scores.
+   * TODO This method reads the text file "HighScores.txt" and fills the names and scores arrays
+   * with the appropriate date to show the top scores and the names of the people that got these
+   * scores.
    * 
    * @throws IOException
    *           Throws an exception if the file doesn't exist.
@@ -182,7 +209,7 @@ public class HighScores {
   }
 
   /**
-   * This method works as an update method for writing an the top scores in case a new score is
+   * TODO This method works as an update method for writing an the top scores in case a new score is
    * added which will ultimately push another value out of the array.
    * 
    * @throws IOException

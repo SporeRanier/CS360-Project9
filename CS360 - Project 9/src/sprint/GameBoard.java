@@ -1,11 +1,7 @@
 package sprint;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
-
-import javax.swing.text.Element;
 
 /**
  * This class acts as a 9x9 gameboard. Each "tile" stores an int 0-9 randomly generated. Contains
@@ -214,10 +210,9 @@ public class GameBoard {
    *                          The first(and only) value if there are no moves is {-1, -1}.
    */
   public ArrayList<int[]> getHint(int value) {
-    // TODO: Change type?
-    // List<Element> potential = Arrays.asList(array);
     ArrayList<int[]> potential = new ArrayList<>();
-    int[] coordinates = new int[2];;
+    int[] coordinates = new int[2];
+    //marker for most number of tiles removed
     int topTiles = 1;
     // iterate through entire board
     for (int x = 0; x <= 8; x++) {
