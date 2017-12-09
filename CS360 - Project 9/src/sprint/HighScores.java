@@ -47,8 +47,12 @@ public class HighScores {
    * 
    * @return scores[] the data field that will hold the top 10 high scores.
    */
-  public int[] getScores() {
-    return scores;
+  public String[] getScores() {
+    String[] strScores = new String[10];
+    for (int x=0; x<10; x++){
+      strScores[x] = String.valueOf(scores[x]);
+    }
+    return strScores;
   }
 
   /**
@@ -133,7 +137,7 @@ public class HighScores {
    * @param time
    *          The corresponding time that goes with the new high score.
    */
-  public void insertScore(int position, String name, int score, String time) {
+  public void insertScore(String name) {
     int temp = 0;
     String tempName = "";
     String tempTime = "";
