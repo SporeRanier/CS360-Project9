@@ -15,6 +15,10 @@ import javax.swing.*;
 
 import javax.swing.GroupLayout.Alignment;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+
 
 public class TimedGameScreen extends JFrame implements Observer{
 	private JButton[][] tiles;
@@ -24,15 +28,11 @@ public class TimedGameScreen extends JFrame implements Observer{
 	private JButton backGround3;
 	private JButton quitButton;
 	private JButton resetButton;
-	private File music1;
-	private File music2;
-	private File music3;
-	private URI uri1;
-	private URI uri2;
-	private URI uri3;
-	private URL url1;
-	private URL url2;
-	private URL url3;
+	private JButton btnClear;
+	private JComboBox comboBox;
+	private AudioStream music1;
+  private AudioStream music2;
+  private AudioStream music3;
 	private AudioClip sound1;
 	private AudioClip sound2;
 	private AudioClip sound3;
@@ -42,6 +42,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 	JPanel panelS;
 	JPanel panelB;
 	JPanel panelW;
+	JPanel comboPanel;
 	JLabel timeLabel;
 	JLabel queueN;
 	JLabel[] queueT;
@@ -52,7 +53,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 	private JButton debugButton;
 	
 	public TimedGameScreen() {
-		setTitle("Sum Fun 0.97");
+		setTitle("Sum Fun 0.98");
 		moveScore = 0;
 		gameDriver = TimedGame.getTimedGame();
 		gameDriver.addObserver(this);
@@ -141,48 +142,28 @@ public class TimedGameScreen extends JFrame implements Observer{
 		
 	}
 	public void buildPanel(){
+	  try {
+      music1 = new AudioStream(getClass().getResourceAsStream("/sounds/katyusha.wav"));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    try {
+      music2 = new AudioStream(getClass().getResourceAsStream("/sounds/rasputin.wav"));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    try {
+      music3 = new AudioStream(getClass().getResourceAsStream("/sounds/slav.wav"));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    
+  }
 		
-		
-		
-		
-		
-		
-		music1 = new File("katyusha.wav");
-		music2 = new File("rasputin.wav");
-		music3 = new File("sacred.wav");
-		
-		URI uri1 = music1.toURI();
-		URI uri2 = music2.toURI();
-		URI uri3 = music3.toURI();
-		URL url1;
-		try {
-			url1 = uri1.toURL();
-			sound1 = Applet.newAudioClip(url1);
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		
-		
-		try {			
-			url2 = uri2.toURL();
-			sound2 = Applet.newAudioClip(url2);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {			
-			url3 = uri3.toURL();
-			sound3 = Applet.newAudioClip(url3);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	//Creates the queue
+	//Creates the queue and side GUI Elements.
 	private void createQueueGui(){
 		panelB.setLayout(null);
 		GridBagLayout gblPanelB = new GridBagLayout();
@@ -254,28 +235,63 @@ public class TimedGameScreen extends JFrame implements Observer{
 		scoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		scoreLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
 		panel2.add(scoreLabel);
-		
+		//MoveLabel
 		JLabel moves_1 = new JLabel("Move Score:");
 		moves_1.setForeground(Color.YELLOW);
 		moves_1.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		panel2.add(moves_1);
-		
+		//Move Score
 		movesLabel = new JLabel("0");
 		movesLabel.setForeground(Color.YELLOW);
 		movesLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		movesLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
 		panel2.add(movesLabel);
-		
-		JLabel reset = new JLabel("Resets:");
+		//ClearLabel
+		JLabel reset = new JLabel("Clears:");
 		reset.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		reset.setForeground(Color.YELLOW);
 		panel2.add(reset);
-		
+		//Clear Button
 		JLabel resetLabel = new JLabel("1");
 		resetLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
 		resetLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resetLabel.setForeground(Color.YELLOW);
 		panel2.add(resetLabel);
+		
+		comboPanel = new JPanel();
+    comboPanel.setBackground(Color.BLACK);
+    GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+    gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+    gbc_panel_1.fill = GridBagConstraints.BOTH;
+    gbc_panel_1.gridx = 0;
+    gbc_panel_1.gridy = 3;
+    panelB.add(comboPanel, gbc_panel_1);
+    
+    comboBox = new JComboBox();
+    comboBox.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+    comboBox.setBackground(new Color(178, 34, 34));
+    comboBox.setForeground(Color.YELLOW);
+    comboBox.setToolTipText("Clear a number! Can be only done once.");
+    comboBox.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}));
+    comboBox.setSelectedIndex(0);
+    comboPanel.add(comboBox);
+    
+    btnClear = new JButton("Clear!");
+    btnClear.setForeground(Color.YELLOW);
+    btnClear.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+    btnClear.setBackground(new Color(178, 34, 34));
+    btnClear.addActionListener(new ButtonListener());
+    comboPanel.add(btnClear);
+    
+    JPanel lenin = new JPanel();
+    lenin.setBounds(0, 274, 202, 202);
+    lenin.setBackground(Color.BLACK);
+    GridBagConstraints leninCon = new GridBagConstraints();
+    leninCon.fill = GridBagConstraints.BOTH;
+    leninCon.gridx = 0;
+    leninCon.gridy = 4;
+    panelB.add(lenin, leninCon);
+    
 		
 		JPanel panelSU = new JPanel();
 		panelSU.setBounds(0, 274, 202, 202);
@@ -288,7 +304,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 		
 		JLabel stalin = new JLabel("");
 		stalin.setBackground(Color.BLACK);
-		stalin.setIcon(new ImageIcon("nid8.gif"));
+		stalin.setIcon(new ImageIcon(TimedGameScreen.class.getResource("/images/nid8.gif")));
 		panelSU.add(stalin);
 		
 		queueT = new JLabel[5];
@@ -379,33 +395,33 @@ public class TimedGameScreen extends JFrame implements Observer{
 	private class ButtonListener implements ActionListener {
 
 		
-				public void actionPerformed(ActionEvent RCA) {
-					if(RCA.getSource() == backGround1){
-						sound2.stop();
-						sound1.loop();
-						sound3.stop();
-					}
-					if(RCA.getSource() == backGround2){
-						sound1.stop();
-						sound2.loop();
-						sound3.stop();
-						
-					}
-					if(RCA.getSource() == backGround3){
-						sound1.stop();
-						sound2.stop();
-						sound3.loop();
-						
-					}
-					if(RCA.getSource() == offButton){
-						sound1.stop();
-						sound2.stop();
-						sound3.stop();
-					}
-					if(RCA.getSource() == quitButton){
-						sound1.stop();
-						sound2.stop();
-						sound3.stop();
+				public void actionPerformed(ActionEvent actionRca) {
+				  if(actionRca.getSource() == backGround1){
+            AudioPlayer.player.stop(music2);
+            AudioPlayer.player.start(music1);
+            AudioPlayer.player.stop(music3);
+          }
+          if(actionRca.getSource() == backGround2){
+            AudioPlayer.player.start(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
+            
+          }
+          if(actionRca.getSource() == backGround3){
+            AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.start(music3);
+            
+          }
+          if(actionRca.getSource() == offButton){
+            AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
+          }
+          if(actionRca.getSource() == quitButton){
+            sound1.stop();
+            sound2.stop();
+            sound3.stop();
 						try {
 							GameOverScreen gameoverquit = new GameOverScreen();
 						} catch (IOException e) {
@@ -416,10 +432,10 @@ public class TimedGameScreen extends JFrame implements Observer{
 						
 					}
 					
-					if(RCA.getSource() == resetButton){
+					if(actionRca.getSource() == resetButton){
 						gameDriver.refreshQueue();						
 					}
-					if(RCA.getSource() == debugButton){
+					if(actionRca.getSource() == debugButton){
 						gameDriver.debugGame();
 					}
 					

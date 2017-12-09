@@ -13,6 +13,9 @@ import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
 
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
 
 
 
@@ -24,18 +27,10 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 	private JButton backGround3;
 	private JButton quitButton;
 	private JButton resetButton;
-	private File music1;
-	private File music2;
-	private File music3;
+	private AudioStream music1;
+	private AudioStream music2;
+	private AudioStream music3;
 	private File music4;
-	private URI uri1;
-	private URI uri2;
-	private URI uri3;
-	private URI uri4;
-	private URL url1;
-	private URL url2;
-	private URL url3;
-	private URL url4;
 	private AudioClip sound1;
 	private AudioClip sound2;
 	private AudioClip sound3;
@@ -54,6 +49,10 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 	JLabel scoreLabel;
 	JLabel movesLabel;
 	JLabel msLabel;
+	private JPanel comboPanel;
+	private JButton btnClear;
+	private JComboBox comboBox;
+	private JButton hintButton;
 	
 	public P8NormalGameScreen() {
 		setTitle("Sum Fun 0.97");
@@ -136,37 +135,25 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		setVisible(true);
 	}
 	public void buildPanel(){
-		music1 = new File("katyusha.wav");
-		music2 = new File("rasputin.wav");
-		music3 = new File("sacred.wav");
-		
-		URI uri1 = music1.toURI();
-		URI uri2 = music2.toURI();
-		URI uri3 = music3.toURI();
-		URL url1;
 		try {
-			url1 = uri1.toURL();
-			sound1 = Applet.newAudioClip(url1);
-			
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-				
-		try {			
-			url2 = uri2.toURL();
-			sound2 = Applet.newAudioClip(url2);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {			
-			url3 = uri3.toURL();
-			sound3 = Applet.newAudioClip(url3);
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+      music1 = new AudioStream(getClass().getResourceAsStream("/sounds/katyusha.wav"));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+		try {
+      music2 = new AudioStream(getClass().getResourceAsStream("/sounds/rasputin.wav"));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+		try {
+      music3 = new AudioStream(getClass().getResourceAsStream("/sounds/slav.wav"));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+		
 	}
 	
 	private void createQueueGui(){
@@ -175,8 +162,8 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		GridBagLayout gridBag = new GridBagLayout();
 		gridBag.columnWidths = new int[]{202, 0};
 		gridBag.rowHeights = new int[] {202, 0, 180, 70, 202};
-		gridBag.columnWeights = new double[]{0.0, Double.MIN_VALUE};
-		gridBag.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0};
+		gridBag.columnWeights = new double[]{1.0, Double.MIN_VALUE};
+		gridBag.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0};
 		panelB.setLayout(gridBag);
 		
 		JPanel panelE = new JPanel();
@@ -200,6 +187,13 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		gridBagCon2.gridx = 0;
 		gridBagCon2.gridy = 1;
 		panelB.add(panel, gridBagCon2);
+		
+		hintButton = new JButton("Hint?");
+		hintButton.setForeground(Color.YELLOW);
+		hintButton.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+		hintButton.setBackground(new Color(178, 34, 34));
+		hintButton.addActionListener(new ButtonListener());
+		panel.add(hintButton);
 		
 		resetButton = new JButton("Reset Queue!");
 		panel.add(resetButton);
@@ -253,7 +247,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		movesLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
 		panel2.add(movesLabel);
 		
-		JLabel reset = new JLabel("Resets:");
+		JLabel reset = new JLabel("Clears:");
 		reset.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		reset.setForeground(Color.YELLOW);
 		panel2.add(reset);
@@ -263,6 +257,31 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		resetLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resetLabel.setForeground(Color.YELLOW);
 		panel2.add(resetLabel);
+		//Panel with drop down options.
+		comboPanel = new JPanel();
+		comboPanel.setBackground(Color.BLACK);
+		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+		gbc_panel_1.insets = new Insets(0, 0, 5, 0);
+		gbc_panel_1.fill = GridBagConstraints.BOTH;
+		gbc_panel_1.gridx = 0;
+		gbc_panel_1.gridy = 3;
+		panelB.add(comboPanel, gbc_panel_1);
+		//Drop down box
+		comboBox = new JComboBox();
+		comboBox.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+		comboBox.setBackground(new Color(178, 34, 34));
+		comboBox.setForeground(Color.YELLOW);
+		comboBox.setToolTipText("Clear a number! Can be only done once.");
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}));
+		comboBox.setSelectedIndex(0);
+		comboPanel.add(comboBox);
+		//Clear button
+		btnClear = new JButton("Clear!");
+		btnClear.setForeground(Color.YELLOW);
+		btnClear.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+		btnClear.setBackground(new Color(178, 34, 34));
+		btnClear.addActionListener(new ButtonListener());
+		comboPanel.add(btnClear);
 		
 		JPanel lenin = new JPanel();
 		lenin.setBounds(0, 274, 202, 202);
@@ -275,7 +294,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		
 		JLabel stalin = new JLabel("");
 		stalin.setBackground(Color.BLACK);
-		stalin.setIcon(new ImageIcon("nid8.gif"));
+		stalin.setIcon(new ImageIcon(P8NormalGameScreen.class.getResource("/images/nid8.gif")));
 		lenin.add(stalin);
 		
 		queueT = new JLabel[5];
@@ -353,31 +372,31 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		
 				public void actionPerformed(ActionEvent actionRca) {
 					if(actionRca.getSource() == backGround1){
-						sound2.stop();
-						sound1.loop();
-						sound3.stop();
+					  AudioPlayer.player.stop(music2);
+					  AudioPlayer.player.start(music1);
+					  AudioPlayer.player.stop(music3);
 					}
 					if(actionRca.getSource() == backGround2){
-						sound1.stop();
-						sound2.loop();
-						sound3.stop();
+					  AudioPlayer.player.start(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
 						
 					}
 					if(actionRca.getSource() == backGround3){
-						sound1.stop();
-						sound2.stop();
-						sound3.loop();
-						
+					  AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.start(music3);
+            
 					}
 					if(actionRca.getSource() == offButton){
-						sound1.stop();
-						sound2.stop();
-						sound3.stop();
+					  AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
 					}
 					if(actionRca.getSource() == quitButton){
-						sound1.stop();
-						sound2.stop();
-						sound3.stop();
+					  AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
 						try {
 							GameOverScreen gameoverquit = new GameOverScreen();
 						} catch (IOException e) {
@@ -394,6 +413,20 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 						resetLabel.setText("0");
 						
 					}
+					if(actionRca.getSource() == btnClear){
+					  int i = 0;
+					  i = comboBox.getSelectedIndex();
+					  gameDriver.removeTiles(i);
+            btnClear.setEnabled(false);
+            
+          }
+					if(actionRca.getSource() == hintButton){
+            int i = 0;
+            
+            gameDriver.getHint();
+            
+            
+          }
 					
 				}
 				

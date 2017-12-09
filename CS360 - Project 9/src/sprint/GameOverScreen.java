@@ -27,10 +27,10 @@ public class GameOverScreen extends JFrame{
 		setSize(582, 369);
 		setAlwaysOnTop(true);
 		getContentPane().setLayout(null);
-		InputStream in = new FileInputStream("gameover.wav");
+		
 
 	    // create an audiostream from the inputstream
-		audioStream = new AudioStream(in);
+		audioStream = new AudioStream(getClass().getResourceAsStream("/sounds/gameover.wav"));
 
 	    // play the audio clip with the audioplayer class
 		AudioPlayer.player.start(audioStream);
