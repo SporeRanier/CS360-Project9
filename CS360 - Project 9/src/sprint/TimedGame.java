@@ -1,7 +1,7 @@
 package sprint;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
 * Class acts as the game logic for an timed game in Sum Fun.
@@ -15,6 +15,8 @@ import java.util.Arrays;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class TimedGame extends Observable implements Observer {
   private static TimedGame timedInstance = new TimedGame();
@@ -22,6 +24,7 @@ public class TimedGame extends Observable implements Observer {
   private GameBoard gameBoard;
   private Queue queue;
   private HighScores highScores;
+  private HighScoresTimed timedScores;
   private int rawSeconds;
   private int minutes;
   private int seconds;
@@ -30,19 +33,35 @@ public class TimedGame extends Observable implements Observer {
   private boolean tileRemove = true;
   private int hints = 3;
 
-  private static Clock clock;
-  static Thread thread1;
-
+  //private static Clock clock;
+  //static Thread thread1;
+  
+  Timer gameTimer = new Timer();
+  TimerTask gameTask = new TimerTask() {
+    public void run(){
+      rawSeconds --;
+      minutes = rawSeconds / 60;
+      seconds = rawSeconds % 60;
+      setChanged();
+      notifyObservers();
+    }
+  };
+  
   // constructor for a singleton TimedGame
   private TimedGame() {
     gameBoard = GameBoard.getBoard();
     queue = Queue.getQueue();
     highScores = new HighScores();
-    clock = new Clock(180);
-    clock.addObserver(this);
-    thread1 = new Thread(clock);
+    timedScores = new HighScoresTimed();
+    //clock = new Clock(180);
+    //clock.addObserver(this);
+    //thread1 = new Thread(clock);
   }
-
+  
+  public void start(){
+    gameTimer.scheduleAtFixedRate(gameTask, 1000, 1000);
+  }
+  
   /**
    * Returns the instance of this class, as well as starting the thread for the clock.
    * 
@@ -50,7 +69,7 @@ public class TimedGame extends Observable implements Observer {
    */
   public static TimedGame getTimedGame() {
     // starts the thread for the timer
-    thread1.start();
+    //gameTimer.start();
     return timedInstance;
   }
 
@@ -148,8 +167,7 @@ public class TimedGame extends Observable implements Observer {
   @Override
   // This method updates the class when the number of seconds remaining is decreased
   public void update(Observable arg0, Object arg1) {
-    rawSeconds = clock.getSeconds();
-    // calculates minutes/seconds from the raw seconds
+     // calculates minutes/seconds from the raw seconds
     minutes = rawSeconds / 60;
     seconds = rawSeconds % 60;
     setChanged();
@@ -182,9 +200,7 @@ public class TimedGame extends Observable implements Observer {
     gameBoard.debugBoard(newBoard);
     queue.debugQueue(newQueue);
     // reset the clock to a shorter time
-    clock = new Clock(30);
-    thread1 = new Thread(clock);
-    thread1.start();
+    rawSeconds = 30;
     setChanged();
     notifyObservers();
   }
@@ -197,9 +213,7 @@ public class TimedGame extends Observable implements Observer {
     queue.newQueue();
     tileRemove = true;
     hints = 3;
-    clock = new Clock(180);
-    clock.addObserver(this);
-    thread1 = new Thread(clock);
+    rawSeconds = 280;
     setChanged();
     notifyObservers();
   }
@@ -249,6 +263,7 @@ public class TimedGame extends Observable implements Observer {
     }
     return true;
   }
+  
   public void insertScore(String name){
     highScores.insertScore(name);
   }
@@ -257,7 +272,32 @@ public class TimedGame extends Observable implements Observer {
     String[][] scores = new String[3][];
     scores[0] = highScores.getNames();
     scores[1] = highScores.getScores();
-    scores[2] = highScores.getTimes();
+    scores[2] = highScores.getDates();
     return scores;
-  } 
+  }
+  
+  public boolean isTimedHighScore(int score){
+    int position = timedScores.newHighScore(score);
+    if (position == -1){
+      return false;
+    }
+    return true;
+  }
+  
+  public void insertTimedScore(String name){
+    timedScores.insertScore(name);
+  }
+  
+  public String[][] getTimedScores(){
+    String[][] scores = new String[3][];
+    scores[0] = timedScores.getNames();
+    scores[1] = timedScores.getTimes();
+    scores[2] = timedScores.getDates();
+    return scores;
+  }
+  
+  public void saveScores(){
+      highScores.writeToFile();
+      timedScores.writeToFile();
+  }
 }

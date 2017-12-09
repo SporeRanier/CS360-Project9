@@ -1,27 +1,33 @@
 package sprint;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 import javax.swing.JOptionPane;
 
 public class HighScoresTimed {
   private String[] names; // Contains the names of the people who have high timed scores.
-  private int[] scores;
   private int[] times; // Contains the top 10 times for completing the game.
   private String[] dates; // Contains the dates when these high timed scores were achieved.
+  private int newTime;
+  private int position;
+  private String currentDate;
 
   /**
    * TODO Constructor for HighScoresTimed which initializes all the data fields.
    */
-  public HighScoresTimed() {
+  public HighScoresTimed(){
     names = new String[10];
-    scores = new int[10];
     times = new int[10];
     dates = new String[10];
+    fill();
   }
 
   /**
@@ -50,29 +56,17 @@ public class HighScoresTimed {
    * 
    * @return The entire array containing the top 10 high scores.
    */
-  public int[] getScores() {
-    return scores;
-  }
-
-  /**
-   * Another getter method for the scores field which returns individual scores from the scores
-   * array.
-   * 
-   * @param index
-   *          The index of the element from the scores array that needs to be returned.
-   * @return The score value from the scores array at the given index.
-   */
-  public int getScore(int index) {
-    return scores[index];
-  }
-
   /**
    * A getter method for the times data field.
    * 
    * @return The entire array of the best times for the timed game mode.
    */
-  public int[] getTimes() {
-    return times;
+  public String[] getTimes() {
+    String[] strTimes = new String[10];
+    for (int x = 0; x < 10; x++) {
+      strTimes[x] = String.valueOf(times[x]);
+    }
+    return strTimes;
   }
 
   /**
@@ -106,6 +100,20 @@ public class HighScoresTimed {
     return dates[index];
   }
 
+  public void setPosition(int position) {
+    this.position = position;
+  }
+
+  public void setNewTime(int newTime) {
+    this.newTime = newTime;
+  }
+
+  public void setDate() {
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    Date date = new Date();
+    this.currentDate = dateFormat.format(date);
+  }
+
   /**
    * TODO This method checks to see if the score of the most recently completed timed games is a
    * high score and if so returns the index of the position where it will be inserted into the
@@ -115,9 +123,12 @@ public class HighScoresTimed {
    * @return The index where the new score will be inserted if it is a high score or a -1 to
    *         indicate that it is not a new high score.
    */
-  public int newHighScore(int score) {
-    for (int i = 0; i < scores.length; i++) {
-      if (score > scores[i]) {
+  public int newHighScore(int time) {
+    for (int i = 0; i < times.length; i++) {
+      if (time > times[i]) {
+        setPosition(i);
+        setNewTime(time);
+        setDate();
         return i;
       }
     }
@@ -129,25 +140,14 @@ public class HighScoresTimed {
    * name, time, and date values into their respective parallel arrays. Lower scores are then pushed
    * down one position which will result in the values in the 10th being removed completely.
    * 
-   * @param position
-   *          The position where the values will be inserted.
    * @param name
    *          The new name to be inserted into the names field.
-   * @param score
-   *          The new score to be inserted into the scores field.
-   * @param time
-   *          The new time to be inserted into the scores field.
-   * @param date
-   *          The new date to be inserted into the dates field.
    */
-  public void insertScore(int position, String name, int score, int time, String date) {
-    int temp = 0;
+  public void insertScore(String name) {
     String tempName = "";
     int tempTime = 0;
     String tempDate = "";
-    for (int i = scores.length - 1; i > position; i--) {
-      temp = scores[i];
-      scores[i] = scores[i - 1];
+    for (int i = times.length - 1; i > position; i--) {
       tempName = names[i];
       names[i] = names[i - 1];
       tempTime = times[i];
@@ -155,21 +155,9 @@ public class HighScoresTimed {
       tempDate = dates[i];
       dates[i] = dates[i - 1];
     }
-    scores[position] = score;
     names[position] = name;
-    times[position] = time;
-    dates[position] = date;
-  }
-
-  /**
-   * TODO This method prompts the user to enter a name into an input box and returns the string that
-   * they entered.
-   * 
-   * @return The string that was inputed into the input box.
-   */
-  public String enterName() {
-    String input = JOptionPane.showInputDialog("Please enter your name");
-    return input;
+    times[position] = newTime;
+    dates[position] = currentDate;
   }
 
   /**
@@ -179,25 +167,30 @@ public class HighScoresTimed {
    * @throws IOException
    *           If the program has trouble connecting with the file.
    */
-  public void fill() throws IOException {
+  private void fill(){
     String filename = "HighScoresTimed.txt";
     File file = new File(filename);
-    Scanner inputFile = new Scanner(file);
-    String data = "";
-    int i = 0;
-    while (inputFile.hasNextLine()) {
-      data = inputFile.nextLine();
-      StringTokenizer tokenizer = new StringTokenizer(data, " ");
-      names[i] = tokenizer.nextToken();
-      scores[i] = Integer.parseInt(tokenizer.nextToken());
-      times[i] = Integer.parseInt(tokenizer.nextToken());
-      dates[i] = tokenizer.nextToken();
-      i++;
+    Scanner inputFile;
+    try {
+      inputFile = new Scanner(file);
+      String data = "";
+      int i = 0;
+      while (inputFile.hasNextLine()) {
+        data = inputFile.nextLine();
+        StringTokenizer tokenizer = new StringTokenizer(data, " ");
+        names[i] = tokenizer.nextToken();
+        times[i] = Integer.parseInt(tokenizer.nextToken());
+        dates[i] = tokenizer.nextToken();
+        i++;
+      }
+      for (i = 0; i < times.length; i++) {
+        System.out.println(names[i] + " " + times[i] + " " + times[i]);
+      }
+      inputFile.close();
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-    for (i = 0; i < scores.length; i++) {
-      System.out.println(names[i] + " " + scores[i] + " " + times[i]);
-    }
-    inputFile.close();
   }
 
   /**
@@ -207,12 +200,18 @@ public class HighScoresTimed {
    * @throws IOException
    *           In case the program has trouble connecting to the text file.
    */
-  public void writeToFile() throws IOException {
-    FileWriter fwriter = new FileWriter("HighScoresTimed.txt", false);
-    PrintWriter outputFile = new PrintWriter(fwriter);
-    for (int i = 0; i < scores.length; i++) {
-      outputFile.println(names[i] + " " + scores[i] + " " + times[i] + " " + dates[i]);
+  public void writeToFile(){
+    FileWriter fwriter;
+    try {
+      fwriter = new FileWriter("HighScoresTimed.txt", false);
+      PrintWriter outputFile = new PrintWriter(fwriter);
+      for (int i = 0; i < times.length; i++) {
+        outputFile.println(names[i] + " " + times[i] + " " + dates[i]);
+      }
+      outputFile.close();
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-    outputFile.close();
   }
 }

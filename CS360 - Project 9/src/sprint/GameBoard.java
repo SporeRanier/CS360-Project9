@@ -206,25 +206,25 @@ public class GameBoard {
   /**
    * Method which returns an array of the .
    * 
-   * @return ArrayList<int[]> Returns an ArrayList of the best moves.
-   *                          The first(and only) value if there are no moves is {-1, -1}.
+   * @return ArrayList<int[]> Returns an ArrayList of the best moves. The first(and only) value if
+   *         there are no moves is {-1, -1}.
    */
   public ArrayList<int[]> getHint(int value) {
     ArrayList<int[]> potential = new ArrayList<>();
     int[] coordinates = new int[2];
-    //marker for most number of tiles removed
+    // marker for most number of tiles removed
     int topTiles = 1;
     // iterate through entire board
     for (int x = 0; x <= 8; x++) {
       for (int y = 0; y <= 8; y++) {
         int current = getTilesRemoved(x, y, value);
-        //if new best
+        // if new best
         if (current > topTiles) {
           coordinates[0] = x;
           coordinates[1] = y;
           potential.add(coordinates);
           topTiles = current;
-        //if equivalent best
+          // if equivalent best
         } else if (current == topTiles) {
           coordinates[0] = x;
           coordinates[1] = y;
@@ -232,7 +232,7 @@ public class GameBoard {
         }
       }
     }
-    if (potential.isEmpty()){
+    if (potential.isEmpty()) {
       coordinates[0] = -1;
       coordinates[1] = -1;
       potential.add(coordinates);
