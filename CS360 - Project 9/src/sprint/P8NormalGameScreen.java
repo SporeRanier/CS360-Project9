@@ -247,7 +247,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		movesLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
 		panel2.add(movesLabel);
 		
-		JLabel reset = new JLabel("Resets:");
+		JLabel reset = new JLabel("Clears:");
 		reset.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		reset.setForeground(Color.YELLOW);
 		panel2.add(reset);
