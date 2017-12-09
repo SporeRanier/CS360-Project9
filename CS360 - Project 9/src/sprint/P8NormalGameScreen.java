@@ -257,7 +257,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		resetLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resetLabel.setForeground(Color.YELLOW);
 		panel2.add(resetLabel);
-		
+		//Panel with drop down options.
 		comboPanel = new JPanel();
 		comboPanel.setBackground(Color.BLACK);
 		GridBagConstraints gbc_panel_1 = new GridBagConstraints();
@@ -266,7 +266,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		gbc_panel_1.gridx = 0;
 		gbc_panel_1.gridy = 3;
 		panelB.add(comboPanel, gbc_panel_1);
-		
+		//Drop down box
 		comboBox = new JComboBox();
 		comboBox.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		comboBox.setBackground(new Color(178, 34, 34));
@@ -275,7 +275,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}));
 		comboBox.setSelectedIndex(0);
 		comboPanel.add(comboBox);
-		
+		//Clear button
 		btnClear = new JButton("Clear!");
 		btnClear.setForeground(Color.YELLOW);
 		btnClear.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
@@ -394,9 +394,9 @@ public class P8NormalGameScreen extends JFrame implements Observer{
             AudioPlayer.player.stop(music3);
 					}
 					if(actionRca.getSource() == quitButton){
-						sound1.stop();
-						sound2.stop();
-						sound3.stop();
+					  AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
 						try {
 							GameOverScreen gameoverquit = new GameOverScreen();
 						} catch (IOException e) {
