@@ -25,7 +25,7 @@ import java.awt.Color;
 public class P8Menu extends JFrame{
 	//Constructor
 	private BufferedImage kremlin;
-	AudioStream audioStream;
+	AudioStream a;
 	
 	
 	public P8Menu() throws IOException {
@@ -33,7 +33,7 @@ public class P8Menu extends JFrame{
 		setSize(480, 260);
 		getContentPane().setLayout(null);
 		ImageIcon image = new ImageIcon("kremlin.jpg");
-		JLabel label = new JLabel("", new ImageIcon("kremlin.png"), JLabel.CENTER);
+		JLabel label = new JLabel("", new ImageIcon(P8Menu.class.getResource("/images/kremlin.png")), JLabel.CENTER);
 		JButton btnNewButton = new JButton("Normal Game");
 		btnNewButton.setForeground(Color.YELLOW);
 		btnNewButton.setFont(new Font("Showcard Gothic", Font.BOLD, 14));
@@ -59,13 +59,18 @@ public class P8Menu extends JFrame{
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(label, BorderLayout.CENTER );
 		panel.setBounds(0, 0, 464, 221);
-		InputStream in = new FileInputStream("slav.wav");
+		//InputStream in = new FileInputStream("/sounds/slav.wav");
 
 		    // create an audiostream from the inputstream
-		audioStream = new AudioStream(in);
+		a = new AudioStream(getClass().getResourceAsStream("/sounds/slav.wav"));
 
 		    // play the audio clip with the audioplayer class
-		AudioPlayer.player.start(audioStream);
+	  //AudioPlayer.player.start(audioStream);
+		try {
+      AudioPlayer.player.start(a);
+  } catch (Exception e) {
+      e.printStackTrace();
+  }
 		
 		getContentPane().add(panel);
 		
@@ -79,7 +84,7 @@ public class P8Menu extends JFrame{
 			// TODO Auto-generated method stub
 			P8NormalGameScreen game1 = new P8NormalGameScreen();
 			setVisible(false);
-			AudioPlayer.player.stop(audioStream);
+			AudioPlayer.player.stop(a);
 			
 		}
 }
@@ -91,7 +96,7 @@ public class P8Menu extends JFrame{
 			// TODO Auto-generated method stub
 			TimedGameScreen game2 = new TimedGameScreen();
 			setVisible(false);
-			AudioPlayer.player.stop(audioStream);
+			AudioPlayer.player.stop(a);
 		}
 }
 /*	private class DebugButtonListener implements ActionListener {
