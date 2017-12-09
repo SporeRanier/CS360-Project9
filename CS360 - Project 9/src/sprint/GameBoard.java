@@ -287,8 +287,9 @@ public class GameBoard {
   public void removeTiles(int value) {
     for (int x = 0; x <= 8; x++) {
       for (int y = 0; y <= 8; y++) {
-        if (gameBoard[x][y] == value)
+        if (gameBoard[x][y] == value) {
           gameBoard[x][y] = 11;
+        }
         tilesPlaced--;
       }
     }

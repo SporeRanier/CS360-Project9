@@ -137,6 +137,32 @@ public class UntimedGame extends Observable {
   }
 
   /**
+   * Method used in debug mode, that generates a 'winable' gameboard and queue. The queue and
+   * gameBoard are predetermined, and the time is set to a shorter time.
+   */
+  public void debugGame() {
+    int[][] newBoard = new int[9][9];
+    int[] newQueue = { 7, 2, 3, 4, 5 };
+    // fill the new board with 11s (empty spaces)
+    for (int x = 0; x <= 8; x++) {
+      for (int y = 0; y <= 8; y++) {
+        newBoard[x][y] = 11;
+      }
+    }
+    // set up an easily won situation
+    newBoard[2][3] = 6;
+    newBoard[2][4] = 4;
+    newBoard[3][3] = 4;
+    newBoard[4][4] = 3;
+    gameBoard.debugBoard(newBoard);
+    queue.debugQueue(newQueue);
+    // reset the clock to a shorter time
+    moves = 5;
+    setChanged();
+    notifyObservers();
+  }
+  
+  /**
    * Method which removes all instances of the value passed into it from the board.
    * 
    * @param value
