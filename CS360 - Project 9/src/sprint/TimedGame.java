@@ -1,8 +1,5 @@
 package sprint;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 /**
 * Class acts as the game logic for an timed game in Sum Fun.
 * Contains a board, a queue, variables for time, and for Score.
@@ -13,55 +10,46 @@ import java.util.ArrayList;
 * @since   2017-13-18 
 */
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Observer;
-import java.util.Timer;
-import java.util.TimerTask;
 
-public class TimedGame extends Observable implements Observer {
+import javax.swing.Timer;
+
+public class TimedGame extends Observable {
   private static TimedGame timedInstance = new TimedGame();
 
   private GameBoard gameBoard;
   private Queue queue;
   private HighScores highScores;
   private HighScoresTimed timedScores;
+
   private int rawSeconds;
   private int minutes;
   private int seconds;
+
   private int totalScore = 0;
   private int moveScore = 0;
   private boolean tileRemove = true;
   private int hints = 3;
 
-  //private static Clock clock;
-  //static Thread thread1;
-  
-  Timer gameTimer = new Timer();
-  TimerTask gameTask = new TimerTask() {
-    public void run(){
-      rawSeconds --;
-      minutes = rawSeconds / 60;
-      seconds = rawSeconds % 60;
-      setChanged();
-      notifyObservers();
-    }
-  };
-  
+  private GameTimer gameTimer;
+  // private static Clock clock;
+  // static Thread thread1;
+
   // constructor for a singleton TimedGame
   private TimedGame() {
     gameBoard = GameBoard.getBoard();
     queue = Queue.getQueue();
+    rawSeconds = 180;
     highScores = new HighScores();
     timedScores = new HighScoresTimed();
-    //clock = new Clock(180);
-    //clock.addObserver(this);
-    //thread1 = new Thread(clock);
+    gameTimer = new GameTimer(1000, taskPerformer);
+    gameTimer.start();
+
   }
-  
-  public void start(){
-    gameTimer.scheduleAtFixedRate(gameTask, 1000, 1000);
-  }
-  
+
   /**
    * Returns the instance of this class, as well as starting the thread for the clock.
    * 
@@ -69,7 +57,7 @@ public class TimedGame extends Observable implements Observer {
    */
   public static TimedGame getTimedGame() {
     // starts the thread for the timer
-    //gameTimer.start();
+    // gameTimer.start();
     return timedInstance;
   }
 
@@ -164,16 +152,6 @@ public class TimedGame extends Observable implements Observer {
     return rawSeconds;
   }
 
-  @Override
-  // This method updates the class when the number of seconds remaining is decreased
-  public void update(Observable arg0, Object arg1) {
-     // calculates minutes/seconds from the raw seconds
-    minutes = rawSeconds / 60;
-    seconds = rawSeconds % 60;
-    setChanged();
-    notifyObservers();
-  }
-
   // Future
   public int getTiles() {
     return gameBoard.boardStatus();
@@ -213,7 +191,7 @@ public class TimedGame extends Observable implements Observer {
     queue.newQueue();
     tileRemove = true;
     hints = 3;
-    rawSeconds = 280;
+    rawSeconds = 180;
     setChanged();
     notifyObservers();
   }
@@ -242,7 +220,7 @@ public class TimedGame extends Observable implements Observer {
    * 
    * @return int[][] An array where holding a group of 2 ints (an x & y) that are the 'best' moves.
    */
-  public ArrayList<int[]> getHint(){
+  public ArrayList<int[]> getHint() {
     if (hints > 0) {
       hints--;
       return gameBoard.getHint(viewTop());
@@ -252,65 +230,115 @@ public class TimedGame extends Observable implements Observer {
     }
   }
 
+  // returns the number of hints remaining
   public int hintsRemaining() {
     return hints;
   }
-  
-  public boolean isHighScore(int score){
+
+  /**
+   * Method which tests if a score is a high score. Return value tells the caller to get a name and
+   * give it to insertScore().
+   * 
+   * @param score
+   *          the score of the winner
+   * @return boolean - returns true if a high score, false if not.
+   */
+  public boolean isHighScore(int score) {
     int position = highScores.newHighScore(score);
-    if (position == -1){
+    if (position == -1) {
       return false;
     }
     return true;
   }
-  
-  public void insertScore(String name){
+
+  /**
+   * Method that inserts a score (saved locally to high score via isHighScore() with the name.
+   * 
+   * @param name
+   *          the name of the winner to insert into the list.
+   */
+  public void insertScore(String name) {
     highScores.insertScore(name);
   }
-  
-  public String[] getScores(){
+
+  public String[] getScores() {
     String[] scores = new String[10];
-    for(int i = 0; i < 10; i++){
-     if(highScores.getName(i) == null){
-       scores[i] = " ";
-     }
-     else{
-       scores[i] = String.format("%20s   %10s    %s", highScores.getName(i), highScores.getScore(i), highScores.getDate(i)); 
-     }
+    for (int i = 0; i < 10; i++) {
+      if (highScores.getName(i) == null) {
+        scores[i] = " ";
+      } else {
+        scores[i] = String.format("%20s   %10s    %s", highScores.getName(i),
+            highScores.getScore(i), highScores.getDate(i));
+      }
     }
     return scores;
-    }
-  
-  public boolean isTimedHighScore(int score){
+  }
+
+  /**
+   * Method which tests if a time is a high score time. Return value tells the caller to get a name
+   * and give it to insertTimedScore().
+   * 
+   * @param score
+   *          the score of the winner
+   * @return boolean - returns true if a high score, false if not.
+   */
+  public boolean isTimedHighScore(int score) {
     int position = timedScores.newHighScore(score);
-    if (position == -1){
+    if (position == -1) {
       return false;
     }
     return true;
   }
-  
-  public void insertTimedScore(String name){
+
+  /**
+   * Method that inserts a time (saved locally to high score via isTimedHighScore() with the name.
+   * 
+   * @param name
+   *          the name of the winner to insert into the list.
+   */
+  public void insertTimedScore(String name) {
     timedScores.insertScore(name);
   }
-  
-  public String[] getTimedScores(){
+
+  public String[] getTimedScores() {
     String[] scores = new String[10];
-    for(int i = 0; i < 10; i++){
-     if(highScores.getName(i) == null){
-       scores[i] = " ";
-     }
-     else{
-       scores[i] = String.format("%20s   %10s    %s", highScores.getName(i), highScores.getScore(i), highScores.getDate(i)); 
-     }
-    
+    for (int i = 0; i < 10; i++) {
+      if (highScores.getName(i) == null) {
+        scores[i] = " ";
+      } else {
+        scores[i] = String.format("%20s   %10s    %s", highScores.getName(i),
+            highScores.getScore(i), highScores.getDate(i));
+      }
+
     }
-    
-    
     return scores;
   }
-  
-  public void saveScores(){
-      highScores.writeToFile();
-      timedScores.writeToFile();
+
+  /**
+   * Method which saves the scores in highScores and timedScore to their respective files
+   */
+  public void saveScores() {
+    highScores.writeToFile();
+    timedScores.writeToFile();
   }
+
+  // private class for the GameTimer (which is used to keep track of time)
+  private class GameTimer extends Timer {
+    public GameTimer(int arg0, ActionListener arg1) {
+      super(arg0, arg1);
+      // TODO Auto-generated constructor stub
+    }
+  }
+
+  // action listener that decreases rawSeconds, calculates minutes and seconds, and notifies
+  // observers
+  ActionListener taskPerformer = new ActionListener() {
+    public void actionPerformed(ActionEvent evt) {
+      rawSeconds--;
+      seconds = rawSeconds % 60;
+      minutes = rawSeconds / 60;
+      setChanged();
+      notifyObservers();
+    }
+  };
 }
