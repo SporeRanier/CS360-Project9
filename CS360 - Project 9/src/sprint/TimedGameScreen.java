@@ -9,11 +9,13 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
 
 import javax.swing.GroupLayout.Alignment;
+
 
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
@@ -28,6 +30,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 	private JButton backGround3;
 	private JButton quitButton;
 	private JButton resetButton;
+	private JButton hintButton;
 	private JButton btnClear;
 	private JComboBox comboBox;
 	private AudioStream music1;
@@ -50,6 +53,8 @@ public class TimedGameScreen extends JFrame implements Observer{
 	JLabel scoreLabel;
 	JLabel movesLabel;
 	JLabel msLabel;
+	JLabel hints;
+	JLabel hintLabel;
 	private JButton debugButton;
 	
 	public TimedGameScreen() {
@@ -195,6 +200,13 @@ public class TimedGameScreen extends JFrame implements Observer{
 		gbcPanel.gridy = 1;
 		panelB.add(panel, gbcPanel);
 		
+		hintButton = new JButton("Hint?");
+    hintButton.setForeground(Color.YELLOW);
+    hintButton.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+    hintButton.setBackground(new Color(178, 34, 34));
+    hintButton.addActionListener(new ButtonListener());
+    panel.add(hintButton);
+		
 		resetButton = new JButton("Reset Queue!");
 		panel.add(resetButton);
 		resetButton.setForeground(Color.YELLOW);
@@ -257,6 +269,17 @@ public class TimedGameScreen extends JFrame implements Observer{
 		resetLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resetLabel.setForeground(Color.YELLOW);
 		panel2.add(resetLabel);
+		
+		hints = new JLabel("Hints:");
+    hints.setForeground(Color.YELLOW);
+    hints.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+    panel2.add(hints);
+    
+    hintLabel = new JLabel("3");
+    hintLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    hintLabel.setForeground(Color.YELLOW);
+    hintLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
+    panel2.add(hintLabel);
 		
 		comboPanel = new JPanel();
     comboPanel.setBackground(Color.BLACK);
@@ -431,6 +454,19 @@ public class TimedGameScreen extends JFrame implements Observer{
 						setVisible(false);
 						
 					}
+          if(actionRca.getSource() == hintButton){
+            
+            ArrayList<int[]> hints = gameDriver.getHint();
+            int i = 0;
+            int[] j;
+            while(i < hints.size()){
+              j = hints.get(i);
+              tiles[j[0]][j[i]].setBackground(Color.RED);
+              i++;
+            }
+            
+            
+          }
 					
 					if(actionRca.getSource() == resetButton){
 						gameDriver.refreshQueue();						
@@ -453,6 +489,9 @@ public class TimedGameScreen extends JFrame implements Observer{
 			//send the new value to the GameBoard for processing, which returns a score			
 			moveScore = gameDriver.placeTile((int) pressed.getClientProperty("row"), (int) pressed.getClientProperty("column"));
 			if(gameDriver.getRawTime() == 0){
+			  AudioPlayer.player.stop(music2);
+        AudioPlayer.player.stop(music1);
+        AudioPlayer.player.stop(music3);
 				try {
 					GameOverScreen gameoverquit = new GameOverScreen();
 					setVisible(false);
@@ -463,6 +502,9 @@ public class TimedGameScreen extends JFrame implements Observer{
 				
 			}
 			else if((gameDriver.getBoardStatus() == 84)){
+			  AudioPlayer.player.stop(music2);
+        AudioPlayer.player.stop(music1);
+        AudioPlayer.player.stop(music3);
         try {
           GameOverScreen gameoverquit = new GameOverScreen();
         } catch (IOException e1) {
@@ -473,6 +515,9 @@ public class TimedGameScreen extends JFrame implements Observer{
       }
       
       else if(gameDriver.getBoardStatus() == 0){
+        AudioPlayer.player.stop(music2);
+        AudioPlayer.player.stop(music1);
+        AudioPlayer.player.stop(music3);
         try {
           WinScreen win = new WinScreen();
         } catch (IOException e1) {

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
@@ -46,6 +47,8 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 	private JButton btnClear;
 	private JComboBox comboBox;
 	private JButton hintButton;
+	private JLabel hints;
+	private JLabel hintLabel;
 	
 	public P8NormalGameScreen() {
 		setTitle("Sum Fun 0.97");
@@ -257,6 +260,17 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		resetLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		resetLabel.setForeground(Color.YELLOW);
 		panel2.add(resetLabel);
+		
+		hints = new JLabel("Hints:");
+		hints.setForeground(Color.YELLOW);
+		hints.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+		panel2.add(hints);
+		
+		hintLabel = new JLabel("3");
+		hintLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		hintLabel.setForeground(Color.YELLOW);
+		hintLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
+		panel2.add(hintLabel);
 		//Panel with drop down options.
 		comboPanel = new JPanel();
 		comboPanel.setBackground(Color.BLACK);
@@ -421,9 +435,15 @@ public class P8NormalGameScreen extends JFrame implements Observer{
             
           }
 					if(actionRca.getSource() == hintButton){
+					  
+            ArrayList<int[]> hints = gameDriver.getHint();
             int i = 0;
-            
-            gameDriver.getHint();
+            int[] j;
+            while(i < hints.size()){
+              j = hints.get(i);
+              tiles[j[0]][j[i]].setBackground(Color.RED);
+              i++;
+            }
             
             
           }
@@ -445,6 +465,9 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 			moveScore = gameDriver.placeTile((int) pressed.getClientProperty("row"), (int) pressed.getClientProperty("column"));
 			if(gameDriver.getMoves() == 0){
 				try {
+				  AudioPlayer.player.stop(music2);
+          AudioPlayer.player.stop(music1);
+          AudioPlayer.player.stop(music3);
 					GameOverScreen gameoverquit = new GameOverScreen();
 					setVisible(false);
 				} catch (IOException e1) {
@@ -454,6 +477,9 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 				
 			}
 			else if((gameDriver.getBoardStatus() == 84)){
+			  AudioPlayer.player.stop(music2);
+        AudioPlayer.player.stop(music1);
+        AudioPlayer.player.stop(music3);
 				try {
 					GameOverScreen gameoverquit = new GameOverScreen();
 				} catch (IOException e1) {
@@ -464,6 +490,9 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 			}
 			
 			else if(gameDriver.getBoardStatus() == 0){
+			  AudioPlayer.player.stop(music2);
+        AudioPlayer.player.stop(music1);
+        AudioPlayer.player.stop(music3);
         try {
           WinScreen win = new WinScreen();
         } catch (IOException e1) {
