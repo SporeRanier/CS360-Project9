@@ -1,5 +1,10 @@
 package sprint;
-//GUI File, everything will be implemented in future
+/**
+* GUI file for the timed format of the game.
+* @author  Michael Wolgast
+* @version 1.0
+* @since   2017-13-18 
+*/
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.*;
