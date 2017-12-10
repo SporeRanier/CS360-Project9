@@ -476,6 +476,13 @@ public class TimedGameScreen extends JFrame implements Observer{
 					if(actionRca.getSource() == resetButton){
 						gameDriver.refreshQueue();						
 					}
+					if(actionRca.getSource() == btnClear){
+            int i = 0;
+            i = comboBox.getSelectedIndex();
+            gameDriver.removeTiles(i);
+            btnClear.setEnabled(false);
+            
+          }
 					if(actionRca.getSource() == debugButton){
 						gameDriver.debugGame();
 					}

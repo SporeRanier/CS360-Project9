@@ -40,6 +40,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 	JLabel queueN;
 	JLabel[] queueT;
 	int moveScore;
+	int hintNum;
 	JLabel scoreLabel;
 	JLabel movesLabel;
 	JLabel msLabel;
@@ -312,6 +313,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		lenin.add(stalin);
 		
 		queueT = new JLabel[5];
+		hintNum= 0;
 		int[] queueI = gameDriver.viewQueue();
 		for (int x = 0; x <= 4; x++){
 			queueT[x] = new JLabel(String.format("%d            ", queueI[x]));
