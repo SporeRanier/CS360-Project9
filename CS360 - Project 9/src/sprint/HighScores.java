@@ -168,6 +168,7 @@ public class HighScores {
    *           Throws an exception if the file doesn't exist.
    */
   private void fill(){
+    //This
     String filename = "files/saved/HighScores.txt";
     File file = new File(filename);
     Scanner inputFile;
