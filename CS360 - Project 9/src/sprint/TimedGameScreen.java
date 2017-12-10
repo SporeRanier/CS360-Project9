@@ -466,7 +466,7 @@ public class TimedGameScreen extends JFrame implements Observer{
             int[] j;
             while(i < hints.size()){
               j = hints.get(i);
-              tiles[j[0]][j[i]].setBackground(Color.RED);
+              tiles[j[0]][j[1]].setBackground(Color.RED);
               i++;
             }
             
