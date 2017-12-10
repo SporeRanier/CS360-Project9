@@ -12,12 +12,8 @@ import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
-
 import sun.audio.AudioPlayer;
 import sun.audio.AudioStream;
-
-
-
 
 public class P8NormalGameScreen extends JFrame implements Observer{
 	private JButton[][] tiles;
@@ -27,14 +23,11 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 	private JButton backGround3;
 	private JButton quitButton;
 	private JButton resetButton;
+	private JButton debugButton;
 	private AudioStream music1;
 	private AudioStream music2;
 	private AudioStream music3;
-	private File music4;
-	private AudioClip sound1;
-	private AudioClip sound2;
-	private AudioClip sound3;
-	private AudioClip sound4;
+	private AudioStream music4;
 	private JLabel resetLabel;
 	UntimedGame gameDriver;
 	JPanel panelC;
@@ -109,6 +102,13 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		quitButton.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		quitButton.addActionListener(new ButtonListener());
 		panelN.add(quitButton);
+		
+		debugButton = new JButton("Debug");
+    debugButton.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
+    debugButton.setBackground(new Color(178, 34, 34));
+    debugButton.setForeground(Color.YELLOW);
+    debugButton.addActionListener(new ButtonListener());
+    panelN.add(debugButton);
 		
 		JLabel label = new JLabel("                                                                                                                                                                                        ");
 		panelN.add(label);
@@ -427,6 +427,9 @@ public class P8NormalGameScreen extends JFrame implements Observer{
             
             
           }
+					if(actionRca.getSource() == debugButton){
+            //gameDriver.debugGame();
+          }
 					
 				}
 				
@@ -450,7 +453,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 				}
 				
 			}
-			else if((gameDriver.getBoardStatus() == 84) || gameDriver.getBoardStatus() == 0){
+			else if((gameDriver.getBoardStatus() == 84)){
 				try {
 					GameOverScreen gameoverquit = new GameOverScreen();
 				} catch (IOException e1) {
@@ -460,6 +463,15 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 				setVisible(false);
 			}
 			
+			else if(gameDriver.getBoardStatus() == 0){
+        try {
+          WinScreen win = new WinScreen();
+        } catch (IOException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+        setVisible(false);
+      }
 		}
 	}
 	@Override

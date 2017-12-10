@@ -462,16 +462,25 @@ public class TimedGameScreen extends JFrame implements Observer{
 				}
 				
 			}
-			else if((gameDriver.getBoardStatus() == 84) || (gameDriver.getBoardStatus() == 0)){
-				try {
-					GameOverScreen gameoverquit = new GameOverScreen();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				setVisible(false);
-			}
-
+			else if((gameDriver.getBoardStatus() == 84)){
+        try {
+          GameOverScreen gameoverquit = new GameOverScreen();
+        } catch (IOException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+        setVisible(false);
+      }
+      
+      else if(gameDriver.getBoardStatus() == 0){
+        try {
+          WinScreen win = new WinScreen();
+        } catch (IOException e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+        }
+        setVisible(false);
+      }
 		}
 	}
 	@Override
