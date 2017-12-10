@@ -451,8 +451,8 @@ public class TimedGameScreen extends JFrame implements Observer{
             sound1.stop();
             sound2.stop();
             sound3.stop();
-						/*try {
-							GameOverScreen gameoverquit = new GameOverScreen(gameDriver);
+						try {
+							TimedGameOverScreen gameoverquit = new TimedGameOverScreen(gameDriver);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -460,7 +460,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 						setVisible(false);
 						
 					}
-					*/
+					
           if(actionRca.getSource() == hintButton){
             
             ArrayList<int[]> hints = gameDriver.getHint();
@@ -507,7 +507,7 @@ public class TimedGameScreen extends JFrame implements Observer{
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
 				try {
-					GameOverScreen gameoverquit = new GameOverScreen();
+					TimedGameOverScreen gameoverquit = new TimedGameOverScreen(gameDriver);
 					setVisible(false);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -520,7 +520,7 @@ public class TimedGameScreen extends JFrame implements Observer{
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
         try {
-          GameOverScreen gameoverquit = new GameOverScreen();
+          TimedGameOverScreen gameoverquit = new TimedGameOverScreen(gameDriver);
         } catch (IOException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -543,7 +543,6 @@ public class TimedGameScreen extends JFrame implements Observer{
       }
 		}
 	}
-	@Override
 	public void update(Observable o, Object arg) {
 		if (gameDriver.getMoveScore() != -1){
 			try {

@@ -268,13 +268,18 @@ public class TimedGame extends Observable implements Observer {
     highScores.insertScore(name);
   }
   
-  public String[][] getScores(){
-    String[][] scores = new String[3][];
-    scores[0] = highScores.getNames();
-    scores[1] = highScores.getScores();
-    scores[2] = highScores.getDates();
+  public String[] getScores(){
+    String[] scores = new String[10];
+    for(int i = 0; i < 10; i++){
+     if(highScores.getName(i) == null){
+       scores[i] = " ";
+     }
+     else{
+       scores[i] = String.format("%20s   %10s    %s", highScores.getName(i), highScores.getScore(i), highScores.getDate(i)); 
+     }
+    }
     return scores;
-  }
+    }
   
   public boolean isTimedHighScore(int score){
     int position = timedScores.newHighScore(score);
@@ -288,11 +293,19 @@ public class TimedGame extends Observable implements Observer {
     timedScores.insertScore(name);
   }
   
-  public String[][] getTimedScores(){
-    String[][] scores = new String[3][];
-    scores[0] = timedScores.getNames();
-    scores[1] = timedScores.getTimes();
-    scores[2] = timedScores.getDates();
+  public String[] getTimedScores(){
+    String[] scores = new String[10];
+    for(int i = 0; i < 10; i++){
+     if(highScores.getName(i) == null){
+       scores[i] = " ";
+     }
+     else{
+       scores[i] = String.format("%20s   %10s    %s", highScores.getName(i), highScores.getScore(i), highScores.getDate(i)); 
+     }
+    
+    }
+    
+    
     return scores;
   }
   
