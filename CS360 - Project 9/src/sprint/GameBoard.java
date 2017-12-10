@@ -1,6 +1,7 @@
 package sprint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -81,8 +82,13 @@ public class GameBoard {
    *          - The Y coordinate of the tile in question.
    * @return int[] - Returns [0] min for x, [1] min for y, [2] max for x, [3] max for y.
    */
-  private int[] getMinMax(int x, int y) {
+  public int[] getMinMax(int x, int y) {
     int[] minMax = new int[4];
+    //checks if values are valid, returning array full of -1 if not
+    if (x == -1 || y == -1 || x == 9 || y == 9){
+      Arrays.fill(minMax, -1);
+      return minMax;
+    }
     // indicates the bounds of checked area (being 1 away from the center (x,y))
     // minMax[0] is xMin, [1] is yMin, [2] is xMax, [3] is yMax
     minMax[0] = x - 1;
@@ -252,9 +258,13 @@ public class GameBoard {
    * @param y
    *          The Y coordinate of the placed tile.
    */
-  private void clearAround(int x, int y) {
+  public void clearAround(int x, int y) {
     // get the array of bounds
     int[] minMax = getMinMax(x, y);
+    //if the position is invalid (determined by getMinMax), exit the function
+    if (minMax[0] == -1){
+      return;
+    }
     // iterate through from min to max of x & y (bounds) to replace with empty spaces (11)
     for (int j = minMax[0]; j <= minMax[2]; j++) {
       for (int k = minMax[1]; k <= minMax[3]; k++) {

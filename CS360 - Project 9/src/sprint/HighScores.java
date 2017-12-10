@@ -22,7 +22,7 @@ public class HighScores {
   /**
    * Constructor for the HighScores class which initializes each data field.
    */
-  public HighScores(){
+  public HighScores() {
     names = new String[10];
     scores = new int[10];
     dates = new String[10];
@@ -55,8 +55,8 @@ public class HighScores {
    * @return scores[] the data field that will hold the top 10 high scores.
    */
   public String[] getScores() {
-    String [] strScores = new String[10];
-    for (int x=0; x< 10; x++){
+    String[] strScores = new String[10];
+    for (int x = 0; x < 10; x++) {
       strScores[x] = String.valueOf(scores[x]);
     }
     return strScores;
@@ -152,9 +152,9 @@ public class HighScores {
   }
 
   /**
-   * This method checks to see if a new score qualifies to be in the top 10 high scores and if
-   * it does qualify then the index where it will be inserted will be returned otherwise a -1 will
-   * be returned indicating that it is not a new high score.
+   * This method checks to see if a new score qualifies to be in the top 10 high scores and if it
+   * does qualify then the index where it will be inserted will be returned otherwise a -1 will be
+   * returned indicating that it is not a new high score.
    * 
    * @param score
    *          The score that the method will compare to the top 10 high scores to see if it
@@ -171,18 +171,18 @@ public class HighScores {
         return i;
       }
     }
+    System.out.printf("Position:%d", -1);
     return -1;
   }
 
   /**
-   * This method reads the text file "HighScores.txt" and fills the names and scores arrays
-   * with the appropriate date to show the top scores and the names of the people that got these
-   * scores.
+   * This method reads the text file "HighScores.txt" and fills the names and scores arrays with the
+   * appropriate date to show the top scores and the names of the people that got these scores.
    * 
    * @throws IOException
    *           Throws an exception if the file doesn't exist.
    */
-  private void fill(){
+  private void fill() {
     String filename = "HighScores.txt";
     File file = new File(filename);
     Scanner inputFile;
@@ -203,7 +203,7 @@ public class HighScores {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
+
   }
 
   /**
@@ -224,6 +224,13 @@ public class HighScores {
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+    }
+  }
+
+  public void addScores(int[] testScores) {
+
+    for (int i = 0; i < scores.length; i++) {
+      scores[i] = testScores[i];
     }
   }
 }
