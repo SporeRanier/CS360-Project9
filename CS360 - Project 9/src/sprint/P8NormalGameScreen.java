@@ -414,7 +414,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
             AudioPlayer.player.stop(music1);
             AudioPlayer.player.stop(music3);
 						try {
-							GameOverScreen gameoverquit = new GameOverScreen();
+							GameOverScreen gameoverquit = new GameOverScreen(gameDriver);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -475,7 +475,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 				  AudioPlayer.player.stop(music2);
           AudioPlayer.player.stop(music1);
           AudioPlayer.player.stop(music3);
-					GameOverScreen gameoverquit = new GameOverScreen();
+					GameOverScreen gameoverquit = new GameOverScreen(gameDriver);
 					setVisible(false);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -488,7 +488,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
 				try {
-					GameOverScreen gameoverquit = new GameOverScreen();
+					GameOverScreen gameoverquit = new GameOverScreen(gameDriver);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

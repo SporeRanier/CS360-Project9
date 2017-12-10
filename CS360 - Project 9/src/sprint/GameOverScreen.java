@@ -21,13 +21,14 @@ public class GameOverScreen extends JFrame{
 	JButton highScores;
 	JButton btnQuitGame;
 	private JButton btnNewTimedGame;
-	public GameOverScreen() throws IOException {
+	private UntimedGame gameDriver;
+	public GameOverScreen(UntimedGame input) throws IOException {
 		getContentPane().setBackground(Color.BLACK);
 		setTitle("Game Over");
 		setSize(582, 369);
 		setAlwaysOnTop(true);
 		getContentPane().setLayout(null);
-		
+		gameDriver = input;
 
 	    // create an audiostream from the inputstream
 		audioStream = new AudioStream(getClass().getResourceAsStream("/sounds/gameover.wav"));
@@ -89,7 +90,7 @@ public class GameOverScreen extends JFrame{
 					setVisible(false);
 				}
 				if(e.getSource() == highScores){
-					Top10Scores top10 = new Top10Scores();
+					Top10Scores top10 = new Top10Scores(gameDriver);
 					setVisible(false);
 				}
 				if(e.getSource() == btnQuitGame){

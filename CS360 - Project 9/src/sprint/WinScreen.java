@@ -119,7 +119,7 @@ public class WinScreen extends JFrame{
     entry.setFont(new Font("Showcard Gothic", Font.PLAIN, 22));
     entry.setHorizontalAlignment(SwingConstants.CENTER);
     entry.setBackground(new Color(178, 34, 34));
-    entry.setText("You've reached the top 10 scores! Enter your name here!");
+    entry.setText("Enter your name!");
     entry.setBounds(43, 186, 699, 55);
     getContentPane().add(entry);
     entry.setColumns(10);
@@ -153,14 +153,15 @@ public class WinScreen extends JFrame{
           setVisible(false);
         }
         if(e.getSource() == saveButton){
-          Top10Scores top10 = new Top10Scores();
-          AudioPlayer.player.stop(audioStream);
+          
+          //AudioPlayer.player.stop(audioStream);
           name = entry.getText();
+          name = name.substring(0, Math.min(name.length(), 20));
           gameDriver.insertScore(name);
-          setVisible(false);
+          
         }
         if(e.getSource() == highScores){
-          Top10Scores top10 = new Top10Scores();
+          Top10Scores top10 = new Top10Scores(gameDriver);
           AudioPlayer.player.stop(audioStream);
           setVisible(false);
         }

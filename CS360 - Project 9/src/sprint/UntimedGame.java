@@ -233,11 +233,19 @@ public class UntimedGame extends Observable {
    * 
    * @return String[][] - returns an array of the scores. [0] is names, [1] is scores, [2] is dates.
    */
-  public String[][] getScores() {
-    String[][] scores = new String[3][];
-    scores[0] = highScores.getNames();
-    scores[1] = highScores.getScores();
-    scores[2] = highScores.getDates();
+  public String[] getScores() {
+    String[] scores = new String[10];
+    for(int i = 0; i < 10; i++){
+     if(highScores.getName(i) == null){
+       scores[i] = " ";
+     }
+     else{
+       scores[i] = String.format("%20s   %10s    %s", highScores.getName(i), highScores.getScore(i), highScores.getDate(i)); 
+     }
+    
+    }
+    
+    
     return scores;
   }
 

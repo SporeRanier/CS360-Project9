@@ -451,8 +451,8 @@ public class TimedGameScreen extends JFrame implements Observer{
             sound1.stop();
             sound2.stop();
             sound3.stop();
-						try {
-							GameOverScreen gameoverquit = new GameOverScreen();
+						/*try {
+							GameOverScreen gameoverquit = new GameOverScreen(gameDriver);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -460,6 +460,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 						setVisible(false);
 						
 					}
+					*/
           if(actionRca.getSource() == hintButton){
             
             ArrayList<int[]> hints = gameDriver.getHint();
