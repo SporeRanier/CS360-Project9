@@ -532,13 +532,13 @@ public class TimedGameScreen extends JFrame implements Observer{
         AudioPlayer.player.stop(music2);
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
-        /*try {
-          WinScreen win = new WinScreen(0, gameDriver);
+        try {
+          TimedWinScreen win = new TimedWinScreen(0, gameDriver);
         } catch (IOException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
         }
-        */
+        
         setVisible(false);
       }
 		}
