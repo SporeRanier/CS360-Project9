@@ -10,6 +10,8 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.GridLayout;
 
+
+
 public class Top10Scores extends JFrame implements Observer{
 	public Top10Scores() {
 		setTitle("High Scores!");

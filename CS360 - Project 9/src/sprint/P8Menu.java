@@ -20,7 +20,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.*;
 import java.awt.Color;
-
+/**
+ * This is the Menu Screen Class.
+ * 
+ * 
+ * @author Michael Wolgast
+ * @version 1.0
+ * @since 2017-13-18
+ */
 
 public class P8Menu extends JFrame{
 	//Constructor
