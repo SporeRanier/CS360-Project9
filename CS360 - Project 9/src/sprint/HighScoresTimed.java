@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import javax.swing.JOptionPane;
 
 public class HighScoresTimed {
   private String[] names; // Contains the names of the people who have high timed scores.
@@ -62,8 +61,8 @@ public class HighScoresTimed {
    * @return The entire array of the best times for the timed game mode.
    */
   public String[] getTimes() {
-    String[] strTimes = new String[10];
-    for (int x = 0; x < 10; x++) {
+    String [] strTimes = new String[10];
+    for (int x=0; x< 10; x++){
       strTimes[x] = String.valueOf(times[x]);
     }
     return strTimes;
@@ -100,14 +99,32 @@ public class HighScoresTimed {
     return dates[index];
   }
 
+  /**
+   * This method sets the index position where a new timed high score and other corresponding values
+   * will be added to the data fields.
+   * 
+   * @param position
+   *          The index where the new values will be inserted.
+   */
   public void setPosition(int position) {
     this.position = position;
   }
 
+  /**
+   * Used to initialize the newTime field which holds the value of a new time to be added to the
+   * high score table.
+   * 
+   * @param newTime
+   *          The value that the newTime data field will be set to.
+   */
   public void setNewTime(int newTime) {
     this.newTime = newTime;
   }
 
+  /**
+   * A method that sets the value to the date field to the value of the current current date in
+   * years, months and days.
+   */
   public void setDate() {
     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     Date date = new Date();
@@ -183,14 +200,12 @@ public class HighScoresTimed {
         dates[i] = tokenizer.nextToken();
         i++;
       }
-      for (i = 0; i < times.length; i++) {
-        System.out.println(names[i] + " " + times[i] + " " + times[i]);
-      }
       inputFile.close();
     } catch (FileNotFoundException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+   
   }
 
   /**
@@ -213,5 +228,6 @@ public class HighScoresTimed {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
+    
   }
 }
