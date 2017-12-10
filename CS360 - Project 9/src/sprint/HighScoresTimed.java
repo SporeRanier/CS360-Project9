@@ -1,5 +1,4 @@
 package sprint;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -10,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
 public class HighScoresTimed {
   private String[] names; // Contains the names of the people who have high timed scores.
   private int[] times; // Contains the top 10 times for completing the game.
@@ -18,7 +16,6 @@ public class HighScoresTimed {
   private int newTime;
   private int position;
   private String currentDate;
-
   /**
    * TODO Constructor for HighScoresTimed which initializes all the data fields.
    */
@@ -28,7 +25,6 @@ public class HighScoresTimed {
     dates = new String[10];
     fill();
   }
-
   /**
    * TODO The getter method for the names field.
    * 
@@ -38,7 +34,6 @@ public class HighScoresTimed {
   public String[] getNames() {
     return names;
   }
-
   /**
    * Another getter method for the individual elements of the names array.
    * 
@@ -49,7 +44,6 @@ public class HighScoresTimed {
   public String getName(int index) {
     return names[index];
   }
-
   /**
    * Getter method for the scores data field.
    * 
@@ -67,7 +61,6 @@ public class HighScoresTimed {
     }
     return strTimes;
   }
-
   /**
    * Another getter method that returns individual time values from within the times array.
    * 
@@ -78,7 +71,6 @@ public class HighScoresTimed {
   public int getTime(int index) {
     return times[index];
   }
-
   /**
    * A getter method for the dates data field.
    * 
@@ -87,7 +79,6 @@ public class HighScoresTimed {
   public String[] getDates() {
     return dates;
   }
-
   /**
    * Another getter method for the dates field which returns individual elements of the dates array.
    * 
@@ -98,7 +89,6 @@ public class HighScoresTimed {
   public String getDate(int index) {
     return dates[index];
   }
-
   /**
    * This method sets the index position where a new timed high score and other corresponding values
    * will be added to the data fields.
@@ -109,7 +99,6 @@ public class HighScoresTimed {
   public void setPosition(int position) {
     this.position = position;
   }
-
   /**
    * Used to initialize the newTime field which holds the value of a new time to be added to the
    * high score table.
@@ -120,7 +109,6 @@ public class HighScoresTimed {
   public void setNewTime(int newTime) {
     this.newTime = newTime;
   }
-
   /**
    * A method that sets the value to the date field to the value of the current current date in
    * years, months and days.
@@ -130,7 +118,6 @@ public class HighScoresTimed {
     Date date = new Date();
     this.currentDate = dateFormat.format(date);
   }
-
   /**
    * TODO This method checks to see if the score of the most recently completed timed games is a
    * high score and if so returns the index of the position where it will be inserted into the
@@ -151,7 +138,6 @@ public class HighScoresTimed {
     }
     return -1;
   }
-
   /**
    * TODO This method inserts a new high score into the scores array as well as the corresponding
    * name, time, and date values into their respective parallel arrays. Lower scores are then pushed
@@ -176,7 +162,6 @@ public class HighScoresTimed {
     times[position] = newTime;
     dates[position] = currentDate;
   }
-
   /**
    * TODO Fills the data fields with their corresponding values by reading the high score
    * information from a text file.
@@ -185,7 +170,7 @@ public class HighScoresTimed {
    *           If the program has trouble connecting with the file.
    */
   private void fill(){
-    String filename = "HighScoresTimed.txt";
+    String filename = "files/saved/HighScoresTimed.txt";
     File file = new File(filename);
     Scanner inputFile;
     try {
@@ -207,7 +192,6 @@ public class HighScoresTimed {
     }
    
   }
-
   /**
    * TODO This method writes new high score related values, including name, score, time, and date,
    * to a text file.
@@ -218,7 +202,7 @@ public class HighScoresTimed {
   public void writeToFile(){
     FileWriter fwriter;
     try {
-      fwriter = new FileWriter("HighScoresTimed.txt", false);
+      fwriter = new FileWriter("files/saved/HighScoresTimed.txt", false);
       PrintWriter outputFile = new PrintWriter(fwriter);
       for (int i = 0; i < times.length; i++) {
         outputFile.println(names[i] + " " + times[i] + " " + dates[i]);
