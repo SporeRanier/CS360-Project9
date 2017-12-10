@@ -23,7 +23,6 @@ import java.awt.Color;
 /**
  * This is the Menu Screen Class.
  * 
- * 
  * @author Michael Wolgast
  * @version 1.0
  * @since 2017-13-18
