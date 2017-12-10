@@ -55,6 +55,7 @@ public class TimedGameScreen extends JFrame implements Observer{
 	JLabel queueN;
 	JLabel[] queueT;
 	int moveScore;
+	int hintNum;
 	JLabel scoreLabel;
 	JLabel movesLabel;
 	JLabel msLabel;
@@ -469,7 +470,7 @@ public class TimedGameScreen extends JFrame implements Observer{
               tiles[j[0]][j[1]].setBackground(Color.RED);
               i++;
             }
-            
+            hintNum--;
             
           }
 					
@@ -530,12 +531,13 @@ public class TimedGameScreen extends JFrame implements Observer{
         AudioPlayer.player.stop(music2);
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
-        try {
-          WinScreen win = new WinScreen();
+        /*try {
+          WinScreen win = new WinScreen(0, gameDriver);
         } catch (IOException e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
         }
+        */
         setVisible(false);
       }
 		}

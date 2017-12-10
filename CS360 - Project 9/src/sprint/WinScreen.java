@@ -20,17 +20,22 @@ public class WinScreen extends JFrame{
   JButton newGame;
   JButton highScores;
   JButton btnQuitGame;
+  JButton saveButton;
   private JButton btnNewTimedGame;
   private JTextField entry;
-  public WinScreen() throws IOException {
+  private UntimedGame gameDriver;
+  private String name;
+  public WinScreen(int decider, UntimedGame input) throws IOException {
     getContentPane().setBackground(Color.BLACK);
     setTitle("Winner!");
     setSize(800, 600);
     setAlwaysOnTop(true);
     getContentPane().setLayout(null);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    gameDriver = input;
 
-      // create an audiostream from the inputstream
+    // Create an audiostream from the inputstream
+      
     audioStream = new AudioStream(getClass().getResourceAsStream("/sounds/soviet.wav"));
 
       // play the audio clip with the audioplayer class
@@ -52,6 +57,20 @@ public class WinScreen extends JFrame{
     gameoverlabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 76));
     gameoverlabel.setBounds(99, 21, 580, 124);
     getContentPane().add(gameoverlabel);
+    
+    JLabel scorelabel = new JLabel("Score:");
+    scorelabel.setHorizontalAlignment(SwingConstants.CENTER);
+    scorelabel.setForeground(Color.YELLOW);
+    scorelabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+    scorelabel.setBounds(204, 120, 205, 55);
+    getContentPane().add(scorelabel);
+    
+    JLabel label = new JLabel(Integer.toString(gameDriver.getScore()));
+    label.setHorizontalAlignment(SwingConstants.CENTER);
+    label.setForeground(Color.YELLOW);
+    label.setFont(new Font("Showcard Gothic", Font.PLAIN, 30));
+    label.setBounds(371, 120, 158, 54);
+    getContentPane().add(label);
     
     newGame = new JButton("New Normal Game");
     newGame.setBackground(new Color(178, 34, 34));
@@ -84,12 +103,15 @@ public class WinScreen extends JFrame{
     btnQuitGame.setBounds(459, 458, 283, 92);
     btnQuitGame.addActionListener(new GameOverListener());
     getContentPane().add(btnQuitGame);
+    
+    if(decider == 1){
         
-    JButton saveButton = new JButton("Save Score!");
+    saveButton = new JButton("Save Score!");
     saveButton.setFont(new Font("Showcard Gothic", Font.PLAIN, 18));
     saveButton.setForeground(new Color(255, 255, 0));
     saveButton.setBackground(new Color(178, 34, 34));
     saveButton.setBounds(266, 252, 238, 78);
+    saveButton.addActionListener(new GameOverListener());
     getContentPane().add(saveButton);
     
     entry = new JTextField();
@@ -98,10 +120,10 @@ public class WinScreen extends JFrame{
     entry.setHorizontalAlignment(SwingConstants.CENTER);
     entry.setBackground(new Color(178, 34, 34));
     entry.setText("You've reached the top 10 scores! Enter your name here!");
-    entry.setBounds(43, 168, 699, 73);
+    entry.setBounds(43, 186, 699, 55);
     getContentPane().add(entry);
     entry.setColumns(10);
-    
+    }
     JPanel panel = new JPanel();
     panel.setBounds(0, 0, 784, 561);
     getContentPane().add(panel);
@@ -121,15 +143,25 @@ public class WinScreen extends JFrame{
         if(e.getSource() == newGame){
           P8NormalGameScreen newGame = new P8NormalGameScreen();
           newGame.gameDriver.newGame();
+          AudioPlayer.player.stop(audioStream);
           setVisible(false);
         }
         if(e.getSource() == btnNewTimedGame){
           TimedGameScreen time = new TimedGameScreen();
           time.gameDriver.newGame();
+          AudioPlayer.player.stop(audioStream);
+          setVisible(false);
+        }
+        if(e.getSource() == saveButton){
+          Top10Scores top10 = new Top10Scores();
+          AudioPlayer.player.stop(audioStream);
+          name = entry.getText();
+          gameDriver.insertScore(name);
           setVisible(false);
         }
         if(e.getSource() == highScores){
           Top10Scores top10 = new Top10Scores();
+          AudioPlayer.player.stop(audioStream);
           setVisible(false);
         }
         if(e.getSource() == btnQuitGame){

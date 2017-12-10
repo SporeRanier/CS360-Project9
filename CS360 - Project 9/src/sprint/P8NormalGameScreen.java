@@ -1,5 +1,5 @@
 package sprint;
-//GUI File, everything will be implemented in future
+//GUI File, everything will be implemented in future JUNIT TESTING
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.awt.event.*;
@@ -57,7 +57,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		gameDriver = UntimedGame.getUntimedGame();
 		gameDriver.addObserver(this);
 		tiles = new JButton[9][9];
-		
+		hintNum= 3;
 		setSize(1024, 768);
 		getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -267,7 +267,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		hints.setFont(new Font("Showcard Gothic", Font.PLAIN, 11));
 		panel2.add(hints);
 		
-		hintLabel = new JLabel("3");
+		hintLabel = new JLabel(Integer.toString(hintNum));
 		hintLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		hintLabel.setForeground(Color.YELLOW);
 		hintLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 17));
@@ -313,7 +313,7 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 		lenin.add(stalin);
 		
 		queueT = new JLabel[5];
-		hintNum= 0;
+		
 		int[] queueI = gameDriver.viewQueue();
 		for (int x = 0; x <= 4; x++){
 			queueT[x] = new JLabel(String.format("%d            ", queueI[x]));
@@ -447,11 +447,15 @@ public class P8NormalGameScreen extends JFrame implements Observer{
               System.out.printf("%d,%d \t\n", 1,1 );
               i++;
             }
-            
+            hintNum--;
+            hintLabel.setText(Integer.toString(hintNum));
+            if(hintNum==0){
+              hintButton.setEnabled(false);
+            }
             
           }
 					if(actionRca.getSource() == debugButton){
-            //gameDriver.debugGame();
+            gameDriver.debugGame();
           }
 					
 				}
@@ -496,11 +500,23 @@ public class P8NormalGameScreen extends JFrame implements Observer{
 			  AudioPlayer.player.stop(music2);
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
-        try {
-          WinScreen win = new WinScreen();
-        } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+        int decider = 0;
+        int high = gameDriver.getScore();
+        if(gameDriver.isHighScore(high)){
+          decider = 1;
+          try {
+            WinScreen win = new WinScreen(decider, gameDriver);
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          } 
+        }else if(!gameDriver.isHighScore(high)){
+          try {
+            WinScreen win = new WinScreen(decider, gameDriver);
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
         }
         setVisible(false);
       }
