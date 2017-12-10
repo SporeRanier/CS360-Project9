@@ -439,9 +439,10 @@ public class P8NormalGameScreen extends JFrame implements Observer{
             ArrayList<int[]> hints = gameDriver.getHint();
             int i = 0;
             int[] j;
-            while(i < hints.size()){
+            while(i < hints.size() - 1){
               j = hints.get(i);
-              tiles[j[0]][j[i]].setBackground(Color.RED);
+              tiles[j[0]][j[1]].setBackground(Color.RED);
+              System.out.printf("%d,%d \t\n", 1,1 );
               i++;
             }
             

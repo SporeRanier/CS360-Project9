@@ -214,6 +214,7 @@ public class GameBoard {
     int[] coordinates = new int[2];
     // marker for most number of tiles removed
     int topTiles = 1;
+    System.out.println("---------------------------");
     // iterate through entire board
     for (int x = 0; x <= 8; x++) {
       for (int y = 0; y <= 8; y++) {
@@ -224,11 +225,14 @@ public class GameBoard {
           coordinates[1] = y;
           potential.add(coordinates);
           topTiles = current;
+          System.out.println("---");
+          System.out.printf("%d,%d\n", x, y);
           // if equivalent best
         } else if (current == topTiles) {
           coordinates[0] = x;
           coordinates[1] = y;
           potential.add(coordinates);
+          System.out.printf("%d,%d\n", x, y);
         }
       }
     }
