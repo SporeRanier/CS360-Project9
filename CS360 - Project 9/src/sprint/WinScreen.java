@@ -158,6 +158,7 @@ public class WinScreen extends JFrame{
           name = entry.getText();
           name = name.substring(0, Math.min(name.length(), 20));
           gameDriver.insertScore(name);
+          gameDriver.saveScores();
           saveButton.setEnabled(false);
           
         }

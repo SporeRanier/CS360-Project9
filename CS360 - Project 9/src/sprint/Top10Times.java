@@ -42,7 +42,7 @@ public class Top10Times extends JFrame implements Observer{
 		getContentPane().setBackground(Color.RED);
 		setSize(800, 600);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		scoreHolder = gameDriver.getScores();
+		scoreHolder = gameDriver.getTimedScores();
 		JPanel highScorePanel = new JPanel();
 		highScorePanel.setBackground(Color.RED);
 		getContentPane().add(highScorePanel, BorderLayout.CENTER);
@@ -116,13 +116,13 @@ public class Top10Times extends JFrame implements Observer{
 		getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JLabel highScoreLabel = new JLabel("HEROES OF THE SOVIET UNION");
+		JLabel highScoreLabel = new JLabel("SPEEDY HEROES OF THE SOVIET UNION");
 		highScoreLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		highScoreLabel.setForeground(Color.YELLOW);
 		highScoreLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 42));
 		panel.add(highScoreLabel);
 		
-		JLabel lblNewLabel = new JLabel("                Name          Score          Date");
+		JLabel lblNewLabel = new JLabel("                Name          Time               Date");
 		lblNewLabel.setForeground(Color.YELLOW);
 		lblNewLabel.setFont(new Font("Showcard Gothic", Font.PLAIN, 36));
 		panel.add(lblNewLabel);

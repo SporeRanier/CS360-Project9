@@ -532,17 +532,45 @@ public class TimedGameScreen extends JFrame implements Observer{
         AudioPlayer.player.stop(music2);
         AudioPlayer.player.stop(music1);
         AudioPlayer.player.stop(music3);
-        try {
-          TimedWinScreen win = new TimedWinScreen(0, gameDriver);
-        } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+        int deciderScore = 0;
+        int deciderTime = 0;
+        int high = gameDriver.getScore();
+        if(gameDriver.isHighScore(high)){
+          deciderScore = 1;
+          if(gameDriver.isTimedHighScore(gameDriver.getRawTime())){
+            deciderTime = 1;
+            }
+          try {
+            TimedWinScreen win = new TimedWinScreen(deciderTime, deciderScore, gameDriver);
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+          
         }
-        
+        else if(gameDriver.isTimedHighScore(gameDriver.getRawTime())){
+            deciderTime = 1;
+          
+          try {
+            TimedWinScreen win = new TimedWinScreen(deciderScore, deciderTime, gameDriver);
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+         
+        }else{
+          try {
+            TimedWinScreen win = new TimedWinScreen(deciderScore, deciderTime, gameDriver);
+          } catch (IOException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+          }
+        }
         setVisible(false);
       }
+    }
 		}
-	}
+	
 	public void update(Observable o, Object arg) {
 		if (gameDriver.getMoveScore() != -1){
 			try {

@@ -21,11 +21,14 @@ public class TimedWinScreen extends JFrame{
   JButton highScores;
   JButton btnQuitGame;
   JButton saveButton;
+  JButton times;
+  private int scoreYes;
+  private int timeYes;
   private JButton btnNewTimedGame;
   private JTextField entry;
   private TimedGame gameDriver;
   private String name;
-  public TimedWinScreen(int decider,TimedGame input) throws IOException {
+  public TimedWinScreen(int deciderTime, int deciderScore, TimedGame input) throws IOException {
     getContentPane().setBackground(Color.BLACK);
     setTitle("Winner!");
     setSize(800, 600);
@@ -84,14 +87,14 @@ public class TimedWinScreen extends JFrame{
     highScores.setBackground(new Color(178, 34, 34));
     highScores.setForeground(Color.YELLOW);
     highScores.setFont(new Font("Showcard Gothic", Font.PLAIN, 26));
-    highScores.setBounds(43, 458, 283, 92);
+    highScores.setBounds(43, 458, 205, 92);
     highScores.addActionListener(new GameOverListener());
     
     btnNewTimedGame = new JButton("New Timed Game");
     btnNewTimedGame.setBackground(new Color(178, 34, 34));
     btnNewTimedGame.setForeground(Color.YELLOW);
     btnNewTimedGame.setFont(new Font("Showcard Gothic", Font.PLAIN, 26));
-    btnNewTimedGame.setBounds(459, 341, 283, 92);
+    btnNewTimedGame.setBounds(465, 341, 277, 92);
     btnNewTimedGame.addActionListener(new GameOverListener());
     getContentPane().add(btnNewTimedGame);
     getContentPane().add(highScores);
@@ -100,11 +103,21 @@ public class TimedWinScreen extends JFrame{
     btnQuitGame.setBackground(new Color(178, 34, 34));
     btnQuitGame.setForeground(Color.YELLOW);
     btnQuitGame.setFont(new Font("Showcard Gothic", Font.PLAIN, 26));
-    btnQuitGame.setBounds(459, 458, 283, 92);
+    btnQuitGame.setBounds(537, 458, 205, 92);
     btnQuitGame.addActionListener(new GameOverListener());
-    getContentPane().add(btnQuitGame);
     
-    if(decider == 1){
+    times = new JButton("Best Times");
+    times.setForeground(Color.YELLOW);
+    times.setFont(new Font("Showcard Gothic", Font.PLAIN, 26));
+    times.setBackground(new Color(178, 34, 34));
+    times.setBounds(258, 458, 271, 92);
+    times.addActionListener(new GameOverListener());
+    getContentPane().add(times);
+    getContentPane().add(btnQuitGame);
+    scoreYes = deciderScore;
+    timeYes = deciderTime;
+    
+    if(deciderScore == 1 || deciderTime == 1){
         
     saveButton = new JButton("Save Score!");
     saveButton.setFont(new Font("Showcard Gothic", Font.PLAIN, 18));
@@ -157,11 +170,22 @@ public class TimedWinScreen extends JFrame{
           //AudioPlayer.player.stop(audioStream);
           name = entry.getText();
           name = name.substring(0, Math.min(name.length(), 20));
-          gameDriver.insertScore(name);
+          if(scoreYes == 1){
+            gameDriver.insertScore(name);
+          }
+          if(timeYes == 1){
+            gameDriver.insertTimedScore(name);  
+          }
+          gameDriver.saveScores();
           saveButton.setEnabled(false);
           
         }
         if(e.getSource() == highScores){
+          Top10Scores top10 = new Top10Scores(gameDriver);
+          AudioPlayer.player.stop(audioStream);
+          setVisible(false);
+        }
+        if(e.getSource() == times){
           Top10Times top10 = new Top10Times(gameDriver);
           AudioPlayer.player.stop(audioStream);
           setVisible(false);

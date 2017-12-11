@@ -130,6 +130,8 @@ public class UntimedGame extends Observable {
     gameBoard.newBoard();
     queue.newQueue();
     moves = 50;
+    totalScore = 0;
+    moveScore = 0;
     tileRemove = true;
     hints = 3;
     setChanged();

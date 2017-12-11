@@ -190,6 +190,8 @@ public class TimedGame extends Observable {
     gameBoard.newBoard();
     queue.newQueue();
     tileRemove = true;
+    totalScore = 0;
+    moveScore = 0;
     hints = 3;
     rawSeconds = 180;
     setChanged();
@@ -306,8 +308,8 @@ public class TimedGame extends Observable {
       if (highScores.getName(i) == null) {
         scores[i] = " ";
       } else {
-        scores[i] = String.format("%20s   %10s    %s", highScores.getName(i),
-            highScores.getScore(i), highScores.getDate(i));
+        scores[i] = String.format("%20s   %10s    %s", timedScores.getName(i),
+            timedScores.getTime(i), timedScores.getDate(i));
       }
 
     }
