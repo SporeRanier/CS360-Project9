@@ -448,9 +448,9 @@ public class TimedGameScreen extends JFrame implements Observer{
             AudioPlayer.player.stop(music3);
           }
           if(actionRca.getSource() == quitButton){
-            sound1.stop();
-            sound2.stop();
-            sound3.stop();
+            AudioPlayer.player.stop(music2);
+            AudioPlayer.player.stop(music1);
+            AudioPlayer.player.stop(music3);
 						try {
 							TimedGameOverScreen gameoverquit = new TimedGameOverScreen(gameDriver);
 						} catch (IOException e) {

@@ -303,8 +303,9 @@ public class GameBoard {
       for (int y = 0; y <= 8; y++) {
         if (gameBoard[x][y] == value) {
           gameBoard[x][y] = 11;
+          tilesPlaced--;
         }
-        tilesPlaced--;
+        
       }
     }
   }
